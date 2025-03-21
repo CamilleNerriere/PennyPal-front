@@ -1,0 +1,21 @@
+@use "./variables" as v;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%; /* Si tu veux que l'app prenne toute la hauteur */
+  margin: 0;
+  padding: 0;
+  background-color: v.$body;
+  font-family: 'Manrope', 'sans-serif';
+}
+
+.button.button {
+  background: #03256C;
+  border: solid 1px #B9C1CE;
+  color: #fff;
+}

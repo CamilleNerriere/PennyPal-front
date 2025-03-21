@@ -1,0 +1,19 @@
+
+.home-connect {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .button.button {
+    width: 20em;
+    height: 2.5em;
+  }
+}
