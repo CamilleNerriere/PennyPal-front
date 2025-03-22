@@ -31,25 +31,4 @@ h1 {
   color: #03256C;
 }
 
-.header {
-  background: linear-gradient(180deg, rgba(80, 140, 140, 0.64) 0%, #CDD0D5 100%);
-  height: 20%;
-  display: flex;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-.header__img {
-  margin: auto;
-}
-
-@media (min-width: 992px) {
-  .header {
-    justify-content: start;
-  }
-  .header__img {
-    margin: 2.5rem 1rem;
-  }
-}
-
-/*# sourceMappingURL=Header.css.map */
+/*# sourceMappingURL=SignIn.css.map */

@@ -1,5 +1,12 @@
 @use "./variables" as v;
 
+@font-face {
+  font-family: 'Merge One Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Merge One Regular'), url('/fonts/MergeOne-Regular.woff') format('woff');
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -18,4 +25,11 @@ html, body, #root {
   background: #03256C;
   border: solid 1px #B9C1CE;
   color: #fff;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin: 1.5rem;
+  font-family: 'Merge One Regular';
+  color: v.$darkblue;
 }

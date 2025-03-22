@@ -1,18 +1,18 @@
 .home-connect {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  height: 100%;
+  height: 80%;
 }
 .home-connect__wrapper {
   display: flex;
   flex-direction: column;
   gap: 2rem;
   align-items: center;
+  margin-top: 8rem;
 }
 .home-connect .button.button {
-  width: 20em;
-  height: 2.5em;
+  width: 10rem;
+  height: 2.5rem;
 }
 
 /*# sourceMappingURL=HomeConnect.css.map */
