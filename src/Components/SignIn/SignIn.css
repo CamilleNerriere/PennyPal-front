@@ -1,34 +1,3 @@
-@font-face {
-  font-family: "Merge One Regular";
-  font-style: normal;
-  font-weight: normal;
-  src: local("Merge One Regular"), url("/fonts/MergeOne-Regular.woff") format("woff");
-}
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
-html, body, #root {
-  height: 100%; /* Si tu veux que l'app prenne toute la hauteur */
-  margin: 0;
-  padding: 0;
-  background-color: rgba(113, 122, 122, 0.11);
-  font-family: "Manrope", "sans-serif";
-}
-
-.button.button {
-  background: #03256C;
-  border: solid 1px #B9C1CE;
-  color: #fff;
-}
-
-h1 {
-  font-size: 1.5rem;
-  margin: 1.5rem;
-  font-family: "Merge One Regular";
-  color: #03256C;
-}
 
 /*# sourceMappingURL=SignIn.css.map */

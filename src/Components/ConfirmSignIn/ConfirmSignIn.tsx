@@ -1,4 +1,5 @@
 import './ConfirmSignIn.scss';
+import { Button } from 'antd';
 
 function ConfirmSignIn() {
   return (
@@ -7,7 +8,9 @@ function ConfirmSignIn() {
       <div className="ConfirmSignIn__content">
         <p>Votre inscription est terminée. Connectez-vous.</p>
         <div className="ConfirmSignIn__link">
-          <a href="/signin">Se connecter</a>
+          <Button className="button" type="primary" htmlType="button">
+            <a href="/signin">Se connecter</a>
+          </Button>
         </div>
       </div>
     </div>

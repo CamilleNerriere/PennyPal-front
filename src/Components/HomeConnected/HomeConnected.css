@@ -1,0 +1,32 @@
+.HomeConnected {
+  height: 80%;
+}
+.HomeConnected__content {
+  margin: 0 1.5rem;
+}
+.HomeConnected__amount {
+  background-color: rgb(179, 188, 188);
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 1em;
+  box-shadow: 5px 5px 5px #9ba5a6;
+  margin: 2rem 0;
+}
+.HomeConnected__amount__text {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.HomeConnected__nav {
+  line-height: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .HomeConnected__amount {
+    max-width: 25rem;
+    margin: auto;
+  }
+}
+
+/*# sourceMappingURL=HomeConnected.css.map */

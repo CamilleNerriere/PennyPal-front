@@ -5,6 +5,7 @@ import HomeConnect from './Components/HomeConnect/HomeConnect.tsx';
 import Register from './Components/Register/Register.tsx';
 import ConfirmSignIn from './Components/ConfirmSignIn/ConfirmSignIn.tsx';
 import SignIn from './Components/SignIn/SignIn.tsx';
+import HomeConnected from './Components/HomeConnected/HomeConnected.tsx';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/confirm-signin" element={<ConfirmSignIn />} />
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/home-connected" element={<HomeConnected />} />
       </Routes>
     </div>
   );

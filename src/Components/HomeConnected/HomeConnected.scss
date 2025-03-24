@@ -1,0 +1,39 @@
+@use "../../styles/variables.scss" as v;
+
+.HomeConnected {
+  height: 80%;
+
+  &__content {
+    margin: 0 1.5rem;
+  }
+
+  &__amount {
+    background-color: v.$lightgray;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: v.$gutter;
+    box-shadow: 5px 5px 5px v.$lighterblue;
+    margin: 2rem 0;
+
+    &__text {
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+  }
+
+  &__nav {
+    line-height: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .HomeConnected {
+
+    &__amount {
+      max-width: 25rem;
+      margin: auto;
+    }
+  }
+}
