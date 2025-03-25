@@ -6,6 +6,7 @@ import Register from './Components/Register/Register.tsx';
 import ConfirmSignIn from './Components/ConfirmSignIn/ConfirmSignIn.tsx';
 import SignIn from './Components/SignIn/SignIn.tsx';
 import HomeConnected from './Components/HomeConnected/HomeConnected.tsx';
+import UserExpense from './Components/UserExpenses/UserExpense.tsx';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/confirm-signin" element={<ConfirmSignIn />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/home-connected" element={<HomeConnected />} />
+        <Route path="/expenses" element={<UserExpense />} />
       </Routes>
     </div>
   );
