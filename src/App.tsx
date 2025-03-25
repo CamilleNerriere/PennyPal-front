@@ -7,6 +7,7 @@ import ConfirmSignIn from './Components/ConfirmSignIn/ConfirmSignIn.tsx';
 import SignIn from './Components/SignIn/SignIn.tsx';
 import HomeConnected from './Components/HomeConnected/HomeConnected.tsx';
 import UserExpense from './Components/UserExpenses/UserExpense.tsx';
+import Tendances from './Components/Tendances/Tendances.tsx';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/home-connected" element={<HomeConnected />} />
         <Route path="/expenses" element={<UserExpense />} />
+        <Route path="/tendances" element={<Tendances />} />
       </Routes>
     </div>
   );

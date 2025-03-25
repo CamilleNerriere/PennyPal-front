@@ -1,0 +1,14 @@
+.tendances__content {
+  margin: 2.5rem 1.5rem;
+  max-width: 33rem;
+}
+.tendances__content__selections {
+  display: flex;
+  justify-content: space-between;
+}
+.tendances__content__text {
+  margin: 2rem 0.5rem;
+  font-size: 1.2rem;
+}
+
+/*# sourceMappingURL=Tendances.css.map */
