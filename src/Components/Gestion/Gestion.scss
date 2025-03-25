@@ -1,0 +1,25 @@
+.gestion {
+  &__modules {
+    margin: 0 1.5rem;
+
+    &__item {
+      margin-bottom: 1rem;
+
+      &__title {
+        display: flex;
+        gap: 1rem;
+        align-items: first baseline;
+      }
+
+      &__content {
+
+        &--expense {
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+    }
+  }
+}
+
+

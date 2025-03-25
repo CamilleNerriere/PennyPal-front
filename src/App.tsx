@@ -8,6 +8,7 @@ import SignIn from './Components/SignIn/SignIn.tsx';
 import HomeConnected from './Components/HomeConnected/HomeConnected.tsx';
 import UserExpense from './Components/UserExpenses/UserExpense.tsx';
 import Tendances from './Components/Tendances/Tendances.tsx';
+import Gestion from './Components/Gestion/Gestion.tsx';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/home-connected" element={<HomeConnected />} />
         <Route path="/expenses" element={<UserExpense />} />
         <Route path="/tendances" element={<Tendances />} />
+        <Route path="/gestion" element={<Gestion />} />
       </Routes>
     </div>
   );

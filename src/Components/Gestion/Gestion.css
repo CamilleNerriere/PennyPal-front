@@ -1,0 +1,17 @@
+.gestion__modules {
+  margin: 0 1.5rem;
+}
+.gestion__modules__item {
+  margin-bottom: 1rem;
+}
+.gestion__modules__item__title {
+  display: flex;
+  gap: 1rem;
+  align-items: first baseline;
+}
+.gestion__modules__item__content--expense {
+  display: flex;
+  justify-content: space-between;
+}
+
+/*# sourceMappingURL=Gestion.css.map */
