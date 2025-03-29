@@ -12,10 +12,13 @@
       }
 
       &__content {
-
         &--expense {
           display: flex;
           justify-content: space-between;
+        }
+
+        &--expense, &--add-category, &--delete-category {
+          max-width: 20rem;
         }
       }
     }

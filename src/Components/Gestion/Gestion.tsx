@@ -96,17 +96,18 @@ function Gestion() {
           </div>
           {showItems.expenseToAdd && (
             <div className="gestion__modules__item__content--expense">
-              <Select
-                placeholder="Catégorie"
-                onChange={handleAddChangeCategory}
-                options={categoryOptions}
-                style={{ width: '48%', fontSize: '1.2rem' }}
-              />
-              <Space.Compact style={{ width: '48%' }}>
+              <Space.Compact style={{ width: '100%' }}>
+                <Select
+                  placeholder="Catégorie"
+                  onChange={handleAddChangeCategory}
+                  options={categoryOptions}
+                  style={{ width: '70%', fontSize: '1.2rem' }}
+                />
                 <Input
                   value={expense.amount}
                   onChange={(e) => handleInputAmountChange(e)}
                   placeholder="Montant"
+                  style={{ width: '30%' }}
                 />
                 <Button
                   className="button"

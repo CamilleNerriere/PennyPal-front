@@ -9,6 +9,7 @@ import HomeConnected from './Components/HomeConnected/HomeConnected.tsx';
 import UserExpense from './Components/UserExpenses/UserExpense.tsx';
 import Tendances from './Components/Tendances/Tendances.tsx';
 import Gestion from './Components/Gestion/Gestion.tsx';
+import Profil from './Components/Profil/Profil.tsx';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/expenses" element={<UserExpense />} />
         <Route path="/tendances" element={<Tendances />} />
         <Route path="/gestion" element={<Gestion />} />
+        <Route path="/profil" element={<Profil />} />
       </Routes>
     </div>
   );

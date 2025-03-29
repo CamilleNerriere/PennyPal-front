@@ -1,0 +1,36 @@
+.profil__content {
+  margin: 0 2.5em;
+}
+
+.profil__description {
+  margin-bottom: 2rem;
+  line-height: 1.5rem;
+}
+
+.profil__edit--title {
+  margin-bottom: 2rem;
+}
+.profil__edit--form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+.profil__edit--form button {
+  width: 50%;
+}
+
+@media (min-width: 768px) {
+  .profil__edit--form {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    max-width: 60rem;
+    align-items: center;
+  }
+  .profil__edit--form button {
+    width: 15rem;
+  }
+}
+
+/*# sourceMappingURL=Profil.css.map */
