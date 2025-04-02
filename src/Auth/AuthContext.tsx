@@ -6,6 +6,7 @@ import {
   useEffect,
   ReactNode,
 } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import type { AxiosRequestConfig } from 'axios';
 
@@ -43,10 +44,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('accessToken', res.data.token);
   };
 
+  const navigate = useNavigate();
+
   const logout = async () => {
-    await axios.post('/auth/logout', {}, { withCredentials: true });
+    await axios.post(`${API_URL}/Auth/Logout`, {}, { withCredentials: true });
     setAccessToken(null);
     localStorage.removeItem('accessToken');
+    navigate('/');
   };
 
   useEffect(() => {

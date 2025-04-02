@@ -1,9 +1,13 @@
 import './SignIn.scss';
+import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, FieldProps, ErrorMessage } from 'formik';
 import { Input, Button } from 'antd';
 import * as Yup from 'yup';
+import { useAuth } from '../../Auth/AuthContext.tsx';
 
 function SignIn() {
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const initialValues = {
     Email: '',
     Password: '',
@@ -14,8 +18,13 @@ function SignIn() {
     Password: Yup.string().required('Mot de passe requis'),
   });
 
-  const handleSubmit = (values: typeof initialValues) => {
-    console.log(values);
+  const handleSubmit = async (values: typeof initialValues) => {
+    try {
+      await login(values.Email, values.Password);
+      navigate('/home');
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="SignIn">

@@ -7,8 +7,10 @@ import {
   faUser,
   faChartLine,
   faHouse,
+  faPowerOff,
 } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { useAuth } from '../../Auth/AuthContext.tsx';
 
 interface NavItem {
   to: string;
@@ -17,6 +19,8 @@ interface NavItem {
 }
 
 function NavBar() {
+  const { isAuthenticated, logout } = useAuth();
+
   const navItems = [
     { to: '/home', icon: faHouse, label: 'Accueil' },
     { to: '/expenses', icon: faTableList, label: 'Dépenses' },
@@ -30,24 +34,46 @@ function NavBar() {
       role="navigation"
       aria-label="Navigation principale"
     >
-      {navItems.map((item: NavItem) => (
-        <NavLink
-          to={item.to}
-          key={item.to}
-          className="nav-icon"
-          aria-label={item.label}
-          title={item.label}
-        >
+      {isAuthenticated ? (
+        <>
+          {navItems.map((item: NavItem) => (
+            <NavLink
+              to={item.to}
+              key={item.to}
+              className="nav-icon"
+              aria-label={item.label}
+              title={item.label}
+            >
+              {({ isActive }) => (
+                <div className="nav-item">
+                  <FontAwesomeIcon
+                    icon={item.icon}
+                    className={isActive ? 'active' : ''}
+                  />
+                </div>
+              )}
+            </NavLink>
+          ))}
+          <div className="nav-item">
+            <FontAwesomeIcon
+              icon={faPowerOff}
+              onClick={logout}
+              cursor={'pointer'}
+            />
+          </div>
+        </>
+      ) : (
+        <NavLink to={'/'} className="nav-icon" aria-label="Home" title="Home">
           {({ isActive }) => (
             <div className="nav-item">
               <FontAwesomeIcon
-                icon={item.icon}
+                icon={faHouse}
                 className={isActive ? 'active' : ''}
               />
             </div>
           )}
         </NavLink>
-      ))}
+      )}
     </nav>
   );
 }

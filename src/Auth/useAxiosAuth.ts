@@ -36,7 +36,7 @@ const useAxiosAuth = () => {
 
           try {
             const res = await axios.post(
-              `{API_URL}/auth/refresh-token`,
+              `${API_URL}/auth/refresh-token`,
               {},
               { withCredentials: true }
             );
