@@ -1,0 +1,14 @@
+.navbar {
+  background-color: #0A5C6B;
+  height: 7%;
+  position: sticky;
+  bottom: 0;
+  color: rgb(179, 188, 188);
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  justify-content: center;
+}
+
+/*# sourceMappingURL=NavBar.css.map */

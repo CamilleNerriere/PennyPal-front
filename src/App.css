@@ -1,5 +1,8 @@
 .app {
   height: 100dvh;
 }
+.app-body {
+  height: 73%;
+}
 
 /*# sourceMappingURL=App.css.map */

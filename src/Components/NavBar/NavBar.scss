@@ -1,0 +1,14 @@
+@use "../../styles/variables.scss" as v;
+
+.navbar {
+  background-color: v.$mediumblue;
+  height: 7%;
+  position: sticky;
+  bottom: 0;
+  color: v.$lightgray;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  justify-content: center;
+}
