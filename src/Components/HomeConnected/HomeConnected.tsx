@@ -1,13 +1,26 @@
 import './HomeConnected.scss';
+import { useEffect, useState } from 'react';
+import useAxiosAuth from '../../Auth/useAxiosAuth.ts';
 
 function HomeConnected() {
+  const [budget, setBudget] = useState<number>(0);
+
+  const axiosAuth = useAxiosAuth();
+  useEffect(() => {
+    axiosAuth
+      .get('/User/UserRemain')
+      .then((res) => {
+        setBudget(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
   return (
     <div className="HomeConnected">
       <h1>Bienvenue X</h1>
       <div className="HomeConnected__content">
         <div className="HomeConnected__amount">
           <span className="HomeConnected__amount__text">Reste : </span>
-          <span>XXX €</span>
+          <span>{budget} €</span>
         </div>
         <nav className="HomeConnected__nav">
           <ul className="HomeConnected__nav__list">

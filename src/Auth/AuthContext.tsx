@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const refresh = async () => {
       try {
         const res = await axios.post(
-          '/auth/refresh-token',
+          `${API_URL}/Auth/RefreshToken`,
           {},
           { withCredentials: true }
         );
