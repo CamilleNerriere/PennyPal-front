@@ -1,5 +1,6 @@
 import './Gestion.scss';
 import { useState } from 'react';
+import useFetchUserInfos from '../../Hook/useFetchUserInfos.tsx';
 import { Input, Button, Space, Select } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -22,14 +23,11 @@ function Gestion() {
     categoryToDelete: false,
   });
 
-  const categoryOptions = [
-    { value: 'voiture', label: 'Voiture' },
-    {
-      value: 'maison',
-      label: 'Maison',
-    },
-    { value: 'courses', label: 'Courses' },
-  ];
+  const { categoryOptions } = useFetchUserInfos();
+
+  const categoryOptionsWithoutAll = categoryOptions.filter(
+    (category) => category.value !== 'all'
+  );
 
   const handleInputAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -132,10 +130,10 @@ function Gestion() {
           {showItems.categoryToAdd && (
             <div className="gestion__modules__item__content--add-category">
               <Space.Compact style={{ width: '100%' }}>
-                <Select
-                  placeholder="Catégorie"
-                  onChange={(value) => setCategoryToAdd(value)}
-                  options={categoryOptions}
+                <Input
+                  placeholder={'Catégorie'}
+                  onChange={(e) => setCategoryToAdd(e.target.value)}
+                  value={categoryToAdd}
                   style={{ width: '85%', fontSize: '1.2rem' }}
                 />
                 <Button
@@ -165,7 +163,7 @@ function Gestion() {
                 <Select
                   placeholder="Catégorie"
                   onChange={(value) => setCategoryToDelete(value)}
-                  options={categoryOptions}
+                  options={categoryOptionsWithoutAll}
                   style={{ width: '85%', fontSize: '1.2rem' }}
                 />
                 <Button

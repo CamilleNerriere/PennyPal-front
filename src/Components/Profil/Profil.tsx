@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Input, Button } from 'antd';
+import useFetchUserInfos from '../../Hook/useFetchUserInfos.tsx';
 
 function Profil() {
+  const { userInfo } = useFetchUserInfos();
   const [changePassword, setChangePassword] = useState(false);
   const [formValues, setFormValues] = useState({
     password: '',
@@ -20,11 +22,13 @@ function Profil() {
       <h1>Profil</h1>
       <div className="profil__content">
         <div className="profil__description">
-          <div className="profil__description-firstname">Camille</div>
-          <div className="profil__description-lastname">Nerriere</div>
-          <div className="profil__description-email">
-            camille.nerriere@proton.me
+          <div className="profil__description-firstname">
+            {userInfo.firstname}
           </div>
+          <div className="profil__description-lastname">
+            {userInfo.lastname}
+          </div>
+          <div className="profil__description-email">{userInfo.email}</div>
         </div>
         <div className="profil__edit">
           <div
