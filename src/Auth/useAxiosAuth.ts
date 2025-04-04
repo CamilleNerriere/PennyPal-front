@@ -1,21 +1,15 @@
-// auth/useAxiosAuth.ts
-import axios from 'axios';
 import { useEffect } from 'react';
 import { useAuth } from './AuthContext';
+import axios from 'axios';
+import axiosAuthInstance from './axiosAuthInstance';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const useAxiosAuth = () => {
   const { accessToken, logout, setAccessToken } = useAuth();
 
-  const axiosInstance = axios.create({
-    baseURL: API_URL,
-    withCredentials: true,
-  });
-
   useEffect(() => {
-    // Ajoute l'Authorization header
-    const requestInterceptor = axiosInstance.interceptors.request.use(
+    const requestInterceptor = axiosAuthInstance.interceptors.request.use(
       (config) => {
         if (accessToken) {
           config.headers.Authorization = `Bearer ${accessToken}`;
@@ -25,8 +19,7 @@ const useAxiosAuth = () => {
       (error) => Promise.reject(error)
     );
 
-    // Intercepte les erreurs 401
-    const responseInterceptor = axiosInstance.interceptors.response.use(
+    const responseInterceptor = axiosAuthInstance.interceptors.response.use(
       (res) => res,
       async (err) => {
         const originalRequest = err.config;
@@ -36,7 +29,7 @@ const useAxiosAuth = () => {
 
           try {
             const res = await axios.post(
-              `${API_URL}/auth/refresh-token`,
+              `${API_URL}/auth/RefreshToken`,
               {},
               { withCredentials: true }
             );
@@ -46,7 +39,7 @@ const useAxiosAuth = () => {
             setAccessToken(newToken);
 
             originalRequest.headers.Authorization = `Bearer ${newToken}`;
-            return axiosInstance(originalRequest);
+            return axiosAuthInstance(originalRequest);
           } catch (refreshError) {
             await logout();
             return Promise.reject(refreshError);
@@ -58,12 +51,12 @@ const useAxiosAuth = () => {
     );
 
     return () => {
-      axiosInstance.interceptors.request.eject(requestInterceptor);
-      axiosInstance.interceptors.response.eject(responseInterceptor);
+      axiosAuthInstance.interceptors.request.eject(requestInterceptor);
+      axiosAuthInstance.interceptors.response.eject(responseInterceptor);
     };
   }, [accessToken, logout, setAccessToken]);
 
-  return axiosInstance;
+  return axiosAuthInstance;
 };
 
 export default useAxiosAuth;
