@@ -9,15 +9,12 @@
         display: flex;
         gap: 1rem;
         align-items: first baseline;
+        margin-bottom: 0.5rem;
       }
 
       &__content {
-        &--expense {
-          display: flex;
-          justify-content: space-between;
-        }
 
-        &--expense, &--add-category, &--delete-category {
+        &--expense, &--add-category, &--delete-category, &--edit-category {
           max-width: 20rem;
         }
       }

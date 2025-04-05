@@ -8,12 +8,9 @@
   display: flex;
   gap: 1rem;
   align-items: first baseline;
+  margin-bottom: 0.5rem;
 }
-.gestion__modules__item__content--expense {
-  display: flex;
-  justify-content: space-between;
-}
-.gestion__modules__item__content--expense, .gestion__modules__item__content--add-category, .gestion__modules__item__content--delete-category {
+.gestion__modules__item__content--expense, .gestion__modules__item__content--add-category, .gestion__modules__item__content--delete-category, .gestion__modules__item__content--edit-category {
   max-width: 20rem;
 }
 
