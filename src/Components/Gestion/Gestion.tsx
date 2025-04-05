@@ -130,15 +130,16 @@ function Gestion() {
       })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
-    console.log(
-      'Submitted value:',
-      expense.amount,
-      expense.category,
-      expense.name
-    );
   };
 
   const handleAddCategoryClick = () => {
+    axiosAuth
+      .post('/ExpenseCategory', {
+        name: categoryToAdd.name,
+        monthlyBudget: categoryToAdd.budget,
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
     console.log('Submitted value:', categoryToAdd);
   };
 
