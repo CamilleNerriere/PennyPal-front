@@ -14,11 +14,14 @@ import NotFound from './Components/NotFound/NotFound.tsx';
 import NavBar from './Components/NavBar/NavBar.tsx';
 import { AuthProvider } from './Auth/AuthContext.tsx';
 import ProtectedRoute from './Auth/ProtectedRoute.tsx';
+import { message } from 'antd';
 
 function App() {
+  const [messageApi, contextHolder] = message.useMessage();
   return (
     <AuthProvider>
       <div className="app">
+        {contextHolder}
         <title>PennyPal</title>
         <meta
           name="description"
@@ -66,7 +69,7 @@ function App() {
               path="/gestion"
               element={
                 <ProtectedRoute>
-                  <Gestion />
+                  <Gestion messageApi={messageApi} />
                 </ProtectedRoute>
               }
             />

@@ -7,6 +7,9 @@ import { Input, Button, Space, Select, DatePicker } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
+// TODO
+// MAJ du state en cas d'ajout ou suppression de la catégorie
+
 interface IGestionItems {
   expenseToAdd: boolean;
   categoryToAdd: boolean;
@@ -32,7 +35,7 @@ interface ICategoryToEdit {
   budget: string | null;
 }
 
-function Gestion() {
+function Gestion({ messageApi }: { messageApi: any }) {
   const [expense, setExpense] = useState<IExpense>({
     category: null,
     amount: null,
@@ -59,6 +62,22 @@ function Gestion() {
     categoryToEdit: false,
     categoryToDelete: false,
   });
+
+  // Messages
+
+  const success = (content: string) => {
+    messageApi.open({
+      type: 'success',
+      content: content,
+    });
+  };
+
+  const error = (content: string) => {
+    messageApi.open({
+      type: 'error',
+      content: content,
+    });
+  };
 
   const { categoryOptions } = useFetchUserInfos();
 
@@ -143,8 +162,16 @@ function Gestion() {
         amount: expense.amount,
         date: expense.date,
       })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      .then((res) => {
+        if (res.status === 200) {
+          success('Dépense ajoutée avec succès.');
+        } else {
+          error("Erreur lors de l'ajout");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleAddCategoryClick = () => {
@@ -153,7 +180,13 @@ function Gestion() {
         name: categoryToAdd.name,
         monthlyBudget: categoryToAdd.budget,
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        if (res.status === 200) {
+          success('Dépense ajoutée avec succès.');
+        } else {
+          error("Erreur lors de l'ajout");
+        }
+      })
       .catch((err) => console.log(err));
   };
 
@@ -164,14 +197,26 @@ function Gestion() {
         name: categoryToEdit.name,
         monthlyBudget: categoryToEdit.budget,
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        if (res.status === 200) {
+          success('Dépense ajoutée avec succès.');
+        } else {
+          error("Erreur lors de l'ajout");
+        }
+      })
       .catch((err) => console.log(err));
   };
 
   const handleDeleteCategoryClick = () => {
     axiosAuth
       .delete(`/ExpenseCategory/${categoryToDelete}`)
-      .then((res) => console.log(res))
+      .then((res) => {
+        if (res.status === 200) {
+          success('Dépense ajoutée avec succès.');
+        } else {
+          error("Erreur lors de l'ajout");
+        }
+      })
       .catch((err) => console.log(err));
   };
 
