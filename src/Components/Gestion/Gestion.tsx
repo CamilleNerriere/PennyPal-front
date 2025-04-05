@@ -105,6 +105,21 @@ function Gestion() {
 
   // Edit a category
 
+  const handleSelectCategoryToEdit = (value: string) => {
+    axiosAuth
+      .get(`/ExpenseCategory/${value}`)
+      .then((res) => {
+        setCategoryToEdit({
+          id: res.data.id,
+          name: res.data.name,
+          budget: res.data.monthlyBudget,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const handleEditInputBudgetChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -140,11 +155,24 @@ function Gestion() {
       })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
-    console.log('Submitted value:', categoryToAdd);
+  };
+
+  const handleEditExpenseClick = () => {
+    axiosAuth
+      .put('/ExpenseCategory', {
+        id: categoryToEdit.id,
+        name: categoryToEdit.name,
+        monthlyBudget: categoryToEdit.budget,
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   const handleDeleteCategoryClick = () => {
-    console.log('Submitted value:', categoryToDelete);
+    axiosAuth
+      .delete(`/ExpenseCategory/${categoryToDelete}`)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   // Toggle gestions
@@ -284,9 +312,7 @@ function Gestion() {
             <div className="gestion__modules__item__content--edit-category">
               <Select
                 placeholder="Catégorie"
-                onChange={(value) =>
-                  setCategoryToEdit((prev) => ({ ...prev, id: value }))
-                }
+                onChange={(value) => handleSelectCategoryToEdit(value)}
                 options={categoryOptionsWithoutAll}
                 style={{ width: '100%', marginBottom: '1rem' }}
               />
@@ -313,7 +339,7 @@ function Gestion() {
                 <Button
                   className="button"
                   style={{ width: '15%' }}
-                  onClick={handleDeleteCategoryClick}
+                  onClick={handleEditExpenseClick}
                   type="primary"
                 >
                   Ok
