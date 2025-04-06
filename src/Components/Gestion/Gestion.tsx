@@ -171,6 +171,7 @@ function Gestion({ messageApi }: { messageApi: any }) {
       })
       .catch((err) => {
         console.log(err);
+        error("Erreur lors de l'ajout");
       });
   };
 
@@ -199,9 +200,9 @@ function Gestion({ messageApi }: { messageApi: any }) {
       })
       .then((res) => {
         if (res.status === 200) {
-          success('Dépense ajoutée avec succès.');
+          success('Dépense éditée avec succès.');
         } else {
-          error("Erreur lors de l'ajout");
+          error("Erreur lors de l'édition");
         }
       })
       .catch((err) => console.log(err));
@@ -212,9 +213,9 @@ function Gestion({ messageApi }: { messageApi: any }) {
       .delete(`/ExpenseCategory/${categoryToDelete}`)
       .then((res) => {
         if (res.status === 200) {
-          success('Dépense ajoutée avec succès.');
+          success('Dépense supprimée avec succès.');
         } else {
-          error("Erreur lors de l'ajout");
+          error('Erreur lors de la suppression.');
         }
       })
       .catch((err) => console.log(err));

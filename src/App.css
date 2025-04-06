@@ -1,9 +1,11 @@
 .app {
-  height: 100dvh;
+  height: 100vh;
+  overflow: hidden;
 }
 .app-body {
   height: 73%;
   padding-top: 1.5rem;
+  overflow-y: auto;
 }
 
 /*# sourceMappingURL=App.css.map */

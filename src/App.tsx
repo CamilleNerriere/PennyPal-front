@@ -53,7 +53,7 @@ function App() {
               path="/expenses"
               element={
                 <ProtectedRoute>
-                  <UserExpense />
+                  <UserExpense messageApi={messageApi} />
                 </ProtectedRoute>
               }
             />

@@ -1,15 +1,34 @@
 import './Expenses.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrashCan } from '@fortawesome/free-regular-svg-icons';
-import { JSX } from 'react';
+import { Dispatch, JSX, SetStateAction } from 'react';
+
+interface IExpenseToDelete {
+  id: number;
+  name: string;
+}
 
 interface Props {
+  id: number;
   amount: number;
   categoryName: string;
   expenseName: string;
+  setExpenseToEdit: Dispatch<SetStateAction<number | null>>;
+  setExpenseToDelete: Dispatch<SetStateAction<IExpenseToDelete | null>>;
+  isDeleteModalOpen: boolean;
+  setIsDeleteModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-function Expenses({ amount, categoryName, expenseName }: Props): JSX.Element {
+function Expenses({
+  id,
+  amount,
+  categoryName,
+  expenseName,
+  setExpenseToEdit,
+  setExpenseToDelete,
+  isDeleteModalOpen,
+  setIsDeleteModalOpen,
+}: Props): JSX.Element {
   return (
     <div className="Expenses">
       <div className="Expenses__text">
@@ -19,8 +38,21 @@ function Expenses({ amount, categoryName, expenseName }: Props): JSX.Element {
         </div>
         <div className="Expenses__text-infos__additional">
           <div className="Expenses__text-infos__additional__icons">
-            <FontAwesomeIcon icon={faPenToSquare} />
-            <FontAwesomeIcon icon={faTrashCan} />
+            <FontAwesomeIcon
+              icon={faPenToSquare}
+              cursor={'pointer'}
+              onClick={() => {
+                setExpenseToEdit(id);
+              }}
+            />
+            <FontAwesomeIcon
+              icon={faTrashCan}
+              cursor={'pointer'}
+              onClick={() => {
+                setExpenseToDelete({ id: id, name: expenseName });
+                setIsDeleteModalOpen(!isDeleteModalOpen);
+              }}
+            />
           </div>
         </div>
       </div>

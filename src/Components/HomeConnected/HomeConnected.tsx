@@ -4,19 +4,30 @@ import useAxiosAuth from '../../Auth/useAxiosAuth.ts';
 
 function HomeConnected() {
   const [budget, setBudget] = useState<number>(0);
+  const [user, setUser] = useState('');
 
   const axiosAuth = useAxiosAuth();
   useEffect(() => {
-    axiosAuth
-      .get('/User/UserRemain')
-      .then((res) => {
-        setBudget(res.data);
-      })
-      .catch((err) => console.log(err));
+    const fetchData = async () => {
+      try {
+        const [userRes, budgetRes] = await Promise.all([
+          axiosAuth.get('/User'),
+          axiosAuth.get('/User/UserRemain'),
+        ]);
+        console.log(userRes.data);
+        setUser(userRes.data.firstname + ' ' + userRes.data.lastname);
+        setBudget(budgetRes.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
   }, []);
+
   return (
     <div className="HomeConnected">
-      <h1>Bienvenue X</h1>
+      <h1>Bienvenue {user}</h1>
       <div className="HomeConnected__content">
         <div className="HomeConnected__amount">
           <span className="HomeConnected__amount__text">Reste : </span>
