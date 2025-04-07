@@ -36,7 +36,7 @@ function SignIn() {
         validateOnBlur={true}
         validateOnChange={true}
       >
-        {({ isSubmitting, errors, touched, isValid, dirty }) => (
+        {({ isSubmitting, isValid, dirty }) => (
           <Form className="register__form">
             <div className="register__form__field">
               <label className="sr-only">Email</label>
@@ -46,12 +46,11 @@ function SignIn() {
                 )}
               </Field>
 
-              {errors.Email && touched.Email ? (
-                <div className="register__form__field__error">
-                  {errors.Email}
-                </div>
-              ) : null}
-              <ErrorMessage name="Email" />
+              <ErrorMessage
+                name="Email"
+                component="div"
+                className="register__form__field__error"
+              />
             </div>
 
             <div className="register__form__field">
@@ -62,12 +61,11 @@ function SignIn() {
                 )}
               </Field>
 
-              {errors.Password && touched.Password ? (
-                <div className="register__form__field__error">
-                  {errors.Password}
-                </div>
-              ) : null}
-              <ErrorMessage name="Password" />
+              <ErrorMessage
+                name="Password"
+                component="div"
+                className="register__form__field__error"
+              />
             </div>
 
             <div>
