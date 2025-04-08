@@ -1,5 +1,6 @@
 import './UserExpenses.scss';
 import { Select, DatePicker, ConfigProvider, Modal } from 'antd';
+import ModalEditExpense from './ModalEditExpense.tsx';
 import type { DatePickerProps, GetProps } from 'antd';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -19,7 +20,10 @@ interface Expense {
   id: number;
   amount: number;
   categoryName: string;
+  categoryId: number;
   expenseName: string;
+  date: string;
+  userId: number;
 }
 
 interface IExpenseToDelete {
@@ -42,15 +46,14 @@ function UserExpense({ messageApi }: { messageApi: any }) {
   });
 
   const [expenses, setExpenses] = useState<Expense[] | []>([]);
-  const [expenseToEdit, setExpenseToEdit] = useState<number | null>(null);
+  const [expenseToEdit, setExpenseToEdit] = useState<Expense | null>(null);
   const [expenseToDelete, setExpenseToDelete] =
     useState<IExpenseToDelete | null>(null);
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const axiosAuth = useAxiosAuth();
-
-  // Messages
 
   // Messages
 
@@ -68,7 +71,42 @@ function UserExpense({ messageApi }: { messageApi: any }) {
     });
   };
 
-  // Modal Gestion
+  // Edit Expense
+
+  const handleSetExpenseToEdit = (id: number) => {
+    const expenseToEdit: Expense | undefined = expenses.find(
+      (expense) => expense.id === id
+    );
+    if (expenseToEdit) setExpenseToEdit(expenseToEdit);
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditOk = () => {
+    axiosAuth
+      .put(`Expense/Update`, {
+        id: expenseToEdit?.id,
+        categoryId: expenseToEdit?.categoryId,
+        name: expenseToEdit?.expenseName,
+        amount: expenseToEdit?.amount,
+        date: expenseToEdit?.date,
+        userId: expenseToEdit?.userId,
+      })
+      .then((res) => {
+        if (res.status === 204) {
+          success('Dépense éditée avec succès');
+        } else {
+          error("Erreur lors de l'édition");
+        }
+        setExpenseToEdit(null);
+      })
+      .catch((err) => {
+        console.log(err);
+        error("Erreur lors de l'édition");
+      });
+    setIsEditModalOpen(false);
+  };
+
+  // Delete Expense
 
   const handleDeleteOk = () => {
     axiosAuth
@@ -85,16 +123,10 @@ function UserExpense({ messageApi }: { messageApi: any }) {
         console.log(err);
         error('Erreur lors de la suppression');
       });
-
-    setIsDeleteModalOpen(false);
-  };
-
-  const handleDeleteCancel = () => {
     setIsDeleteModalOpen(false);
   };
 
   const disabledDate: RangePickerProps['disabledDate'] = (current) => {
-    // Can not select days before today and today
     return current > dayjs().endOf('day');
   };
 
@@ -112,6 +144,9 @@ function UserExpense({ messageApi }: { messageApi: any }) {
               categoryName:
                 categoryOptions.find((cat) => cat.value == data.categoryId)
                   ?.label || '',
+              categoryId: data.categoryId,
+              date: data.date,
+              userId: data.userId,
             });
             setExpenses(expenses);
           }
@@ -188,7 +223,8 @@ function UserExpense({ messageApi }: { messageApi: any }) {
               amount={expense.amount}
               categoryName={expense.categoryName}
               expenseName={expense.expenseName}
-              setExpenseToEdit={setExpenseToEdit}
+              date={expense.date}
+              handleSetExpenseToEdit={handleSetExpenseToEdit}
               setExpenseToDelete={setExpenseToDelete}
               isDeleteModalOpen={isDeleteModalOpen}
               setIsDeleteModalOpen={setIsDeleteModalOpen}
@@ -200,13 +236,20 @@ function UserExpense({ messageApi }: { messageApi: any }) {
         title={`Supprimer la dépense`}
         open={isDeleteModalOpen}
         onOk={handleDeleteOk}
-        onCancel={handleDeleteCancel}
+        onCancel={() => setIsDeleteModalOpen(false)}
       >
         <p>
           Confirmez-vous la suppression de la dépense{' '}
           {expenseToDelete && expenseToDelete.name} ?{' '}
         </p>
       </Modal>
+      <ModalEditExpense
+        setExpenseToEdit={setExpenseToEdit}
+        expenseToEdit={expenseToEdit}
+        isEditModalOpen={isEditModalOpen}
+        handleEditOk={handleEditOk}
+        setIsEditModalOpen={setIsEditModalOpen}
+      />
     </div>
   );
 }

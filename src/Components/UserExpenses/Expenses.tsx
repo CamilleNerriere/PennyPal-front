@@ -2,6 +2,7 @@ import './Expenses.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { Dispatch, JSX, SetStateAction } from 'react';
+import dayjs from 'dayjs';
 
 interface IExpenseToDelete {
   id: number;
@@ -13,10 +14,11 @@ interface Props {
   amount: number;
   categoryName: string;
   expenseName: string;
-  setExpenseToEdit: Dispatch<SetStateAction<number | null>>;
+  date: string;
   setExpenseToDelete: Dispatch<SetStateAction<IExpenseToDelete | null>>;
   isDeleteModalOpen: boolean;
   setIsDeleteModalOpen: Dispatch<SetStateAction<boolean>>;
+  handleSetExpenseToEdit: (id: number) => void;
 }
 
 function Expenses({
@@ -24,10 +26,11 @@ function Expenses({
   amount,
   categoryName,
   expenseName,
-  setExpenseToEdit,
+  date,
   setExpenseToDelete,
   isDeleteModalOpen,
   setIsDeleteModalOpen,
+  handleSetExpenseToEdit,
 }: Props): JSX.Element {
   return (
     <div className="Expenses">
@@ -42,7 +45,7 @@ function Expenses({
               icon={faPenToSquare}
               cursor={'pointer'}
               onClick={() => {
-                setExpenseToEdit(id);
+                handleSetExpenseToEdit(id);
               }}
             />
             <FontAwesomeIcon
@@ -56,7 +59,12 @@ function Expenses({
           </div>
         </div>
       </div>
-      <div className="Expenses__price-info">{amount}€</div>
+      <div className="Expenses__numbers">
+        <div className="Expenses__numbers-price">{amount}€</div>
+        <div className="Expenses__numbers-date">
+          {dayjs(date).format('DD/MM/YYYY')}
+        </div>
+      </div>
     </div>
   );
 }
