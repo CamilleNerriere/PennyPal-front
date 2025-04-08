@@ -27,6 +27,16 @@ html, body, #root {
   color: #fff;
 }
 
+.ant-modal-content Button {
+  background: #03256C;
+  border: solid 1px #B9C1CE;
+  color: #fff;
+}
+
+.ant-message {
+  top: 10rem !important;
+}
+
 .h1 {
   font-size: 1.5rem;
   margin: 1.5rem 1.5rem 2rem 1.5rem;

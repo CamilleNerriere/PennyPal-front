@@ -18,6 +18,7 @@ import { message } from 'antd';
 
 function App() {
   const [messageApi, contextHolder] = message.useMessage();
+
   return (
     <AuthProvider>
       <div className="app">
