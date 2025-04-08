@@ -24,9 +24,9 @@ html, body, #root {
   color: #fff;
 }
 
-h1 {
+.h1 {
   font-size: 1.5rem;
-  margin: 1.5rem;
+  margin: 1.5rem 1.5rem 2rem 1.5rem;
   font-family: "Merge One Regular";
   color: #03256C;
 }

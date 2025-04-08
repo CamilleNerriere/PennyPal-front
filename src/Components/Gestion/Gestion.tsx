@@ -1,5 +1,5 @@
 import './Gestion.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useFetchUserInfos from '../../Hook/useFetchUserInfos.tsx';
 import useAxiosAuth from '../../Auth/useAxiosAuth.ts';
 import type { DatePickerProps } from 'antd';
@@ -15,6 +15,11 @@ interface IGestionItems {
   categoryToAdd: boolean;
   categoryToEdit: boolean;
   categoryToDelete: boolean;
+}
+
+interface IUserCategory {
+  value: string;
+  label: string;
 }
 
 interface IExpense {
@@ -63,6 +68,20 @@ function Gestion({ messageApi }: { messageApi: any }) {
     categoryToDelete: false,
   });
 
+  const { categoryOptions } = useFetchUserInfos();
+
+  const [categoryOptionsWithoutAll, setCategoryOptionsWithoutAll] = useState<
+    IUserCategory[]
+  >([]);
+
+  useEffect(() => {
+    if (categoryOptions && categoryOptions.length > 0) {
+      setCategoryOptionsWithoutAll(
+        categoryOptions.filter((category) => category.value !== 'all')
+      );
+    }
+  }, [categoryOptions]);
+
   // Messages
 
   const success = (content: string) => {
@@ -78,12 +97,6 @@ function Gestion({ messageApi }: { messageApi: any }) {
       content: content,
     });
   };
-
-  const { categoryOptions } = useFetchUserInfos();
-
-  const categoryOptionsWithoutAll = categoryOptions.filter(
-    (category) => category.value !== 'all'
-  );
 
   // Add an expense
 
@@ -183,6 +196,10 @@ function Gestion({ messageApi }: { messageApi: any }) {
       })
       .then((res) => {
         if (res.status === 200) {
+          setCategoryOptionsWithoutAll((prev) => [
+            ...prev,
+            { value: res.data.id, label: res.data.name },
+          ]);
           success('Dépense ajoutée avec succès.');
         } else {
           error("Erreur lors de l'ajout");
@@ -201,6 +218,16 @@ function Gestion({ messageApi }: { messageApi: any }) {
       .then((res) => {
         if (res.status === 200) {
           success('Dépense éditée avec succès.');
+          setCategoryOptionsWithoutAll((prev) =>
+            prev.map((cat) =>
+              cat.value === categoryToEdit.id?.toString()
+                ? {
+                    ...cat,
+                    label: categoryToEdit.name,
+                  }
+                : cat
+            )
+          );
         } else {
           error("Erreur lors de l'édition");
         }
@@ -214,6 +241,9 @@ function Gestion({ messageApi }: { messageApi: any }) {
       .then((res) => {
         if (res.status === 200) {
           success('Dépense supprimée avec succès.');
+          setCategoryOptionsWithoutAll((prev) =>
+            prev.filter((cat) => cat.value !== categoryToDelete?.toString())
+          );
         } else {
           error('Erreur lors de la suppression.');
         }
@@ -252,7 +282,7 @@ function Gestion({ messageApi }: { messageApi: any }) {
 
   return (
     <div className="gestion">
-      <h1>Gestion</h1>
+      <h1 className="h1">Gestion</h1>
       <div className="gestion__modules">
         <div className="gestion__modules__item">
           <div

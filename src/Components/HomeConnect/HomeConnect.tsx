@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 function HomeConnect() {
   return (
     <div className="home-connect">
-      <h1>Accueil</h1>
+      <h1 className="h1">Accueil</h1>
       <div className="home-connect__wrapper">
         <Button className="button" type="primary">
           <NavLink to="/signin" aria-label="Se connecter" title="Se connecter">

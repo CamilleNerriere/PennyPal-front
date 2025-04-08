@@ -75,7 +75,7 @@ function Tendances() {
 
   return (
     <div className="tendances">
-      <h1>Tendances</h1>
+      <h1 className="h1">Tendances</h1>
       <div className="tendances__content">
         <div className="tendances__content__selections">
           <ConfigProvider

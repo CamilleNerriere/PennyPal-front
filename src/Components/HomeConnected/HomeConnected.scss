@@ -1,25 +1,55 @@
 @use "../../styles/variables.scss" as v;
 
 .HomeConnected {
-  
+
   &__content {
     margin: 0 1.5rem;
   }
 
+
   &__amount {
     background-color: v.$lightgray;
     padding: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     border-radius: v.$gutter;
     box-shadow: 5px 5px 5px v.$lighterblue;
     margin: 2rem 0;
+
+    &__bold {
+      font-weight: 600;
+    }
+
+    &__total, &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
 
     &__text {
       font-size: 1.2rem;
       font-weight: 500;
     }
+  }
+
+  &__category-remain {
+
+    &__category {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      align-items: center;
+
+      &__title {
+        display: flex;
+        flex-direction: column;
+      }
+
+      &__budget {
+        font-size: 0.8rem;
+      }
+    }
+
+
   }
 
   &__nav {

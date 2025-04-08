@@ -2,21 +2,32 @@ import './HomeConnected.scss';
 import { useEffect, useState } from 'react';
 import useAxiosAuth from '../../Auth/useAxiosAuth.ts';
 
+interface CategoryRemain {
+  id: number;
+  name: string;
+  monthlyBudget: number;
+  remain: number;
+}
+
 function HomeConnected() {
   const [budget, setBudget] = useState<number>(0);
   const [user, setUser] = useState('');
+  const [categoriesRemains, setCategoriesRemains] = useState<
+    CategoryRemain[] | null
+  >(null);
 
   const axiosAuth = useAxiosAuth();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [userRes, budgetRes] = await Promise.all([
+        const [userRes, budgetRes, remainRes] = await Promise.all([
           axiosAuth.get('/User'),
           axiosAuth.get('/User/UserRemain'),
+          axiosAuth.get('/User/UserCategoriesRemain'),
         ]);
-        console.log(userRes.data);
         setUser(userRes.data.firstname + ' ' + userRes.data.lastname);
         setBudget(budgetRes.data);
+        setCategoriesRemains(remainRes.data);
       } catch (err) {
         console.error(err);
       }
@@ -27,28 +38,39 @@ function HomeConnected() {
 
   return (
     <div className="HomeConnected">
-      <h1>Bienvenue {user}</h1>
+      <h1 className="h1">Bienvenue {user}</h1>
       <div className="HomeConnected__content">
         <div className="HomeConnected__amount">
-          <span className="HomeConnected__amount__text">Reste : </span>
-          <span>{budget} €</span>
+          <div className="HomeConnected__amount__header">
+            <span className="HomeConnected__amount__text">Catégorie</span>
+            <span className="HomeConnected__amount__text">Reste</span>
+          </div>
+          <div className="HomeConnected__amount__total">
+            <span className="HomeConnected__amount__bold">Total </span>
+            <span className="HomeConnected__amount__bold">{budget} €</span>
+          </div>
+          <div className="HomeConnected__category-remain">
+            {categoriesRemains &&
+              categoriesRemains.map((category: CategoryRemain) => (
+                <div
+                  className="HomeConnected__category-remain__category"
+                  key={category.id}
+                >
+                  <div className="HomeConnected__category-remain__category__title">
+                    <span className="HomeConnected__category-remain__category__name">
+                      {category.name}
+                    </span>
+                    <span className="HomeConnected__category-remain__category__budget">
+                      Budget : {category.monthlyBudget}€
+                    </span>
+                  </div>
+                  <div className="HomeConnected__category-remain__category__remain">
+                    {category.remain}€
+                  </div>
+                </div>
+              ))}
+          </div>
         </div>
-        <nav className="HomeConnected__nav">
-          <ul className="HomeConnected__nav__list">
-            <li className="HomeConnected__nav__list__item">
-              <a href="/expenses">+ Voir les dépenses</a>
-            </li>
-            <li className="HomeConnected__nav__list__item">
-              <a href="/gestion">+ Gérer les dépenses</a>
-            </li>
-            <li className="HomeConnected__nav__list__item">
-              <a href="/tendencies">+ Tendances</a>
-            </li>
-            <li className="HomeConnected__nav__list__item">
-              <a href="/profil">+ Profil</a>
-            </li>
-          </ul>
-        </nav>
       </div>
     </div>
   );

@@ -94,6 +94,29 @@ function UserExpense({ messageApi }: { messageApi: any }) {
       .then((res) => {
         if (res.status === 204) {
           success('Dépense éditée avec succès');
+
+          const expenseEdited = expenses.find(
+            (exp) => exp.id === expenseToEdit!.id
+          );
+          if (expenseEdited?.categoryId !== expenseToEdit!.categoryId) {
+            setExpenses((prev) =>
+              prev.filter((exp) => exp.id !== expenseToEdit!.id)
+            );
+          } else {
+            setExpenses((prev) =>
+              prev.map((exp) =>
+                exp.id === expenseToEdit!.id
+                  ? {
+                      ...exp,
+                      categoryId: expenseToEdit!.categoryId,
+                      amount: expenseToEdit!.amount,
+                      date: expenseToEdit!.date,
+                      expenseName: expenseToEdit!.expenseName,
+                    }
+                  : exp
+              )
+            );
+          }
         } else {
           error("Erreur lors de l'édition");
         }
@@ -114,6 +137,9 @@ function UserExpense({ messageApi }: { messageApi: any }) {
       .then((res) => {
         if (res.status === 204) {
           success('Dépense supprimée avec succès');
+          setExpenses((prev) =>
+            prev.filter((exp) => exp.id !== expenseToDelete?.id)
+          );
         } else {
           error('Erreur lors de la suppression');
         }
@@ -177,12 +203,11 @@ function UserExpense({ messageApi }: { messageApi: any }) {
       Month: date.month() + 1,
       Year: date.year(),
     }));
-    console.log(date.year(), date.month());
   };
 
   return (
     <div className="userExpense">
-      <h1>Dépenses</h1>
+      <h1 className="h1">Dépenses</h1>
       <div className="userExpense__content">
         {categoryOptions.length > 0 && (
           <div className="userExpense__content__selections">

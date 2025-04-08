@@ -34,7 +34,7 @@ function Register() {
 
   return (
     <div className="register">
-      <h1>Inscription</h1>
+      <h1 className="h1">Inscription</h1>
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}

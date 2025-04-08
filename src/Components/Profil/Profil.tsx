@@ -51,7 +51,7 @@ function Profil({ messageApi }: { messageApi: any }) {
 
   return (
     <div className="profil">
-      <h1>Profil</h1>
+      <h1 className="h1">Profil</h1>
       <div className="profil__content">
         <div className="profil__description">
           <div className="profil__description-firstname">

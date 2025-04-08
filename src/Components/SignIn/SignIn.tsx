@@ -28,7 +28,7 @@ function SignIn() {
   };
   return (
     <div className="SignIn">
-      <h1> Connexion</h1>
+      <h1 className="h1"> Connexion</h1>
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
