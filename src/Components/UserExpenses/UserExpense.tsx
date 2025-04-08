@@ -7,6 +7,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import Expenses from './Expenses.tsx';
 import { useEffect, useState } from 'react';
 import useFetchUserInfos from '../../Hook/useFetchUserInfos.tsx';
+import MessageApi from '../MessagesApi/MessageApi.ts';
 
 import useAxiosAuth from '../../Auth/useAxiosAuth.ts';
 
@@ -55,22 +56,6 @@ function UserExpense({ messageApi }: { messageApi: any }) {
 
   const axiosAuth = useAxiosAuth();
 
-  // Messages
-
-  const success = (content: string) => {
-    messageApi.open({
-      type: 'success',
-      content: content,
-    });
-  };
-
-  const error = (content: string) => {
-    messageApi.open({
-      type: 'error',
-      content: content,
-    });
-  };
-
   // Edit Expense
 
   const handleSetExpenseToEdit = (id: number) => {
@@ -93,7 +78,7 @@ function UserExpense({ messageApi }: { messageApi: any }) {
       })
       .then((res) => {
         if (res.status === 204) {
-          success('Dépense éditée avec succès');
+          MessageApi(messageApi, 'Dépense éditée avec succès', 'success');
 
           const expenseEdited = expenses.find(
             (exp) => exp.id === expenseToEdit!.id
@@ -118,13 +103,13 @@ function UserExpense({ messageApi }: { messageApi: any }) {
             );
           }
         } else {
-          error("Erreur lors de l'édition");
+          MessageApi(messageApi, "Erreur lors de l'édition", 'error');
         }
         setExpenseToEdit(null);
       })
       .catch((err) => {
         console.log(err);
-        error("Erreur lors de l'édition");
+        MessageApi(messageApi, "Erreur lors de l'édition", 'error');
       });
     setIsEditModalOpen(false);
   };
@@ -136,18 +121,18 @@ function UserExpense({ messageApi }: { messageApi: any }) {
       .delete(`Expense/Delete/${expenseToDelete?.id ?? ''}`)
       .then((res) => {
         if (res.status === 204) {
-          success('Dépense supprimée avec succès');
+          MessageApi(messageApi, 'Dépense supprimée avec succès', 'success');
           setExpenses((prev) =>
             prev.filter((exp) => exp.id !== expenseToDelete?.id)
           );
         } else {
-          error('Erreur lors de la suppression');
+          MessageApi(messageApi, 'Erreur lors de la suppression', 'error');
         }
         setExpenseToDelete(null);
       })
       .catch((err) => {
         console.log(err);
-        error('Erreur lors de la suppression');
+        MessageApi(messageApi, 'Erreur lors de la suppression', 'error');
       });
     setIsDeleteModalOpen(false);
   };

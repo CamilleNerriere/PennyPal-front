@@ -2,6 +2,7 @@ import './Gestion.scss';
 import { useEffect, useState } from 'react';
 import useFetchUserInfos from '../../Hook/useFetchUserInfos.tsx';
 import useAxiosAuth from '../../Auth/useAxiosAuth.ts';
+import MessageApi from '../MessagesApi/MessageApi.ts';
 import type { DatePickerProps } from 'antd';
 import { Input, Button, Space, Select, DatePicker } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -82,22 +83,6 @@ function Gestion({ messageApi }: { messageApi: any }) {
     }
   }, [categoryOptions]);
 
-  // Messages
-
-  const success = (content: string) => {
-    messageApi.open({
-      type: 'success',
-      content: content,
-    });
-  };
-
-  const error = (content: string) => {
-    messageApi.open({
-      type: 'error',
-      content: content,
-    });
-  };
-
   // Add an expense
 
   const handleAddChangeCategory = (value: number) => {
@@ -177,14 +162,14 @@ function Gestion({ messageApi }: { messageApi: any }) {
       })
       .then((res) => {
         if (res.status === 200) {
-          success('Dépense ajoutée avec succès.');
+          MessageApi(messageApi, 'Dépense ajoutée avec succès', 'success');
         } else {
-          error("Erreur lors de l'ajout");
+          MessageApi(messageApi, "Erreur lors de l'ajout", 'error');
         }
       })
       .catch((err) => {
         console.log(err);
-        error("Erreur lors de l'ajout");
+        MessageApi(messageApi, "Erreur lors de l'ajout", 'error');
       });
   };
 
@@ -200,12 +185,15 @@ function Gestion({ messageApi }: { messageApi: any }) {
             ...prev,
             { value: res.data.id, label: res.data.name },
           ]);
-          success('Dépense ajoutée avec succès.');
+          MessageApi(messageApi, 'Catégorie ajoutée avec succès', 'success');
         } else {
-          error("Erreur lors de l'ajout");
+          MessageApi(messageApi, "Erreur lors de l'ajout", 'error');
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        MessageApi(messageApi, "Erreur lors de l'ajout", 'error');
+        console.log(err);
+      });
   };
 
   const handleEditExpenseClick = () => {
@@ -217,7 +205,7 @@ function Gestion({ messageApi }: { messageApi: any }) {
       })
       .then((res) => {
         if (res.status === 200) {
-          success('Dépense éditée avec succès.');
+          MessageApi(messageApi, 'Dépense éditée avec succès.', 'success');
           setCategoryOptionsWithoutAll((prev) =>
             prev.map((cat) =>
               cat.value === categoryToEdit.id?.toString()
@@ -229,10 +217,13 @@ function Gestion({ messageApi }: { messageApi: any }) {
             )
           );
         } else {
-          error("Erreur lors de l'édition");
+          MessageApi(messageApi, "Erreur lors de l'édition", 'error');
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        MessageApi(messageApi, "Erreur lors de l'édition", 'error');
+      });
   };
 
   const handleDeleteCategoryClick = () => {
@@ -240,15 +231,18 @@ function Gestion({ messageApi }: { messageApi: any }) {
       .delete(`/ExpenseCategory/${categoryToDelete}`)
       .then((res) => {
         if (res.status === 200) {
-          success('Dépense supprimée avec succès.');
+          MessageApi(messageApi, 'Dépense supprimée avec succès.', 'success');
           setCategoryOptionsWithoutAll((prev) =>
             prev.filter((cat) => cat.value !== categoryToDelete?.toString())
           );
         } else {
-          error('Erreur lors de la suppression.');
+          MessageApi(messageApi, 'Erreur lors de la suppression', 'error');
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        MessageApi(messageApi, 'Erreur lors de la suppression', 'error');
+      });
   };
 
   // Toggle gestions
