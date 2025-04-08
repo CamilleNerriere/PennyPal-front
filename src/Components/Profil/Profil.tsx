@@ -4,8 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Input, Button } from 'antd';
 import useFetchUserInfos from '../../Hook/useFetchUserInfos.tsx';
+import useAxiosAuth from '../../Auth/useAxiosAuth.ts';
+import MessageApi from '../MessagesApi/MessageApi.ts';
 
-function Profil() {
+function Profil({ messageApi }: { messageApi: any }) {
   const { userInfo } = useFetchUserInfos();
   const [changePassword, setChangePassword] = useState(false);
   const [formValues, setFormValues] = useState({
@@ -13,7 +15,37 @@ function Profil() {
     confirmPassword: '',
   });
 
+  const axiosAuth = useAxiosAuth();
+
   const handleSubmit = () => {
+    axiosAuth
+      .put('/Auth/ChangePassword', {
+        password: formValues.password,
+        confirmPassword: formValues.confirmPassword,
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          MessageApi(
+            messageApi,
+            'Mot de passe mis à jour avec succès',
+            'success'
+          );
+        } else {
+          MessageApi(
+            messageApi,
+            'Erreur lors de la mise à jour du mot de passe',
+            'error'
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        MessageApi(
+          messageApi,
+          'Erreur lors de la mise à jour du mot de passe',
+          'error'
+        );
+      });
     console.log(formValues);
   };
 

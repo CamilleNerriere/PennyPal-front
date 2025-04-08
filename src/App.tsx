@@ -77,7 +77,7 @@ function App() {
               path="/profil"
               element={
                 <ProtectedRoute>
-                  <Profil />
+                  <Profil messageApi={messageApi} />
                 </ProtectedRoute>
               }
             />
