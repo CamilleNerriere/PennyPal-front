@@ -16,6 +16,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  loading: boolean;
 }
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -52,9 +53,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem('accessToken');
     navigate('/');
   };
+  const [loading, setLoading] = useState(true);
+
+  let hasRefreshed = false; // 👈 en dehors du useEffect
 
   useEffect(() => {
     const refresh = async () => {
+      if (hasRefreshed) return; // 👈 évite le 2e appel
+      hasRefreshed = true;
+
       try {
         const res = await axios.post(
           `${API_URL}/Auth/RefreshToken`,
@@ -66,6 +73,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } catch (err) {
         setAccessToken(null);
         localStorage.removeItem('accessToken');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -74,7 +83,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ accessToken, setAccessToken, isAuthenticated, login, logout }}
+      value={{
+        accessToken,
+        setAccessToken,
+        isAuthenticated,
+        login,
+        logout,
+        loading,
+      }}
     >
       {children}
     </AuthContext.Provider>

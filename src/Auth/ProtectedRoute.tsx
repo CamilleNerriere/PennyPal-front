@@ -3,7 +3,11 @@ import { useAuth } from './AuthContext';
 import type { JSX } from 'react';
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return isAuthenticated ? children : <Navigate to="/" replace />;
 };

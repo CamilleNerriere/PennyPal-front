@@ -14,3 +14,12 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .custom-range-picker-dropdown {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+  }
+}

@@ -5,7 +5,7 @@ import {
   type TimeRangePickerProps,
   Select,
 } from 'antd';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import useFetchUserInfos from '../../Hook/useFetchUserInfos.tsx';
 import useAxiosAuth from '../../Auth/useAxiosAuth.ts';
 import { useEffect, useState } from 'react';
@@ -105,6 +105,10 @@ function Tendances() {
               onChange={onChangeDate}
               picker="month"
               style={{ width: '48%', height: '3rem' }}
+              popupClassName="custom-range-picker-dropdown"
+              disabledDate={(current) => {
+                return current && current > dayjs().endOf('day');
+              }}
             />
           </ConfigProvider>
         </div>
