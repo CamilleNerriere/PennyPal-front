@@ -4,8 +4,11 @@ import { Formik, Form, Field, FieldProps, ErrorMessage } from 'formik';
 import { Input, Button } from 'antd';
 import * as Yup from 'yup';
 import { useAuth } from '../../Auth/AuthContext.tsx';
+import { handleApiError } from '../../utils/handleApiError.ts';
+import MessageApi from '../MessagesApi/MessageApi.ts';
+import { logError } from '../../utils/logError.ts';
 
-function SignIn() {
+function SignIn({ messageApi }: { messageApi: any }) {
   const { login } = useAuth();
   const navigate = useNavigate();
   const initialValues = {
@@ -22,8 +25,10 @@ function SignIn() {
     try {
       await login(values.Email, values.Password);
       navigate('/home');
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      const message = handleApiError(err);
+      MessageApi(messageApi, message, 'error');
+      logError('Login : ', err);
     }
   };
   return (

@@ -1,6 +1,9 @@
 import './HomeConnected.scss';
 import { useEffect, useState } from 'react';
+import { logError } from '../../utils/logError.ts';
+import { handleApiError } from '../../utils/handleApiError.ts';
 import useAxiosAuth from '../../Auth/useAxiosAuth.ts';
+import MessageApi from '../MessagesApi/MessageApi.ts';
 
 interface CategoryRemain {
   id: number;
@@ -9,7 +12,7 @@ interface CategoryRemain {
   remain: number;
 }
 
-function HomeConnected() {
+function HomeConnected({ messageApi }: { messageApi: any }) {
   const [budget, setBudget] = useState<number>(0);
   const [user, setUser] = useState('');
   const [categoriesRemains, setCategoriesRemains] = useState<
@@ -29,7 +32,9 @@ function HomeConnected() {
         setBudget(budgetRes.data);
         setCategoriesRemains(remainRes.data);
       } catch (err) {
-        console.error(err);
+        const message = handleApiError(err);
+        MessageApi(messageApi, message, 'error');
+        logError('FetchUserData : ', err);
       }
     };
 

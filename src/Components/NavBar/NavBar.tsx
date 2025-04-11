@@ -1,4 +1,3 @@
-import './NavBar.scss';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -11,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { useAuth } from '../../Auth/AuthContext.tsx';
+import './NavBar.scss';
 
 interface NavItem {
   to: string;

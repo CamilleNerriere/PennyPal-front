@@ -1,4 +1,3 @@
-import './Profil.scss';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -6,6 +5,9 @@ import { Input, Button } from 'antd';
 import useFetchUserInfos from '../../Hook/useFetchUserInfos.tsx';
 import useAxiosAuth from '../../Auth/useAxiosAuth.ts';
 import MessageApi from '../MessagesApi/MessageApi.ts';
+import './Profil.scss';
+import { handleApiError } from '../../utils/handleApiError.ts';
+import { logError } from '../../utils/logError.ts';
 
 function Profil({ messageApi }: { messageApi: any }) {
   const { userInfo } = useFetchUserInfos(messageApi);
@@ -23,30 +25,18 @@ function Profil({ messageApi }: { messageApi: any }) {
         password: formValues.password,
         confirmPassword: formValues.confirmPassword,
       })
-      .then((res) => {
-        if (res.status === 200) {
-          MessageApi(
-            messageApi,
-            'Mot de passe mis à jour avec succès',
-            'success'
-          );
-        } else {
-          MessageApi(
-            messageApi,
-            'Erreur lors de la mise à jour du mot de passe',
-            'error'
-          );
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+      .then(() => {
         MessageApi(
           messageApi,
-          'Erreur lors de la mise à jour du mot de passe',
-          'error'
+          'Mot de passe mis à jour avec succès',
+          'success'
         );
+      })
+      .catch((err) => {
+        const message = handleApiError(err);
+        MessageApi(messageApi, message, 'error');
+        logError('UpdatePassword : ', err);
       });
-    console.log(formValues);
   };
 
   return (

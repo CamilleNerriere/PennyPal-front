@@ -3,22 +3,15 @@ import useFetchUserInfos from '../../Hook/useFetchUserInfos.tsx';
 import React from 'react';
 import dayjs from 'dayjs';
 import { Dayjs } from 'dayjs';
-
-interface Expense {
-  id: number;
-  amount: number;
-  categoryName: string;
-  categoryId: number;
-  expenseName: string;
-  date: string;
-  userId: number;
-}
+import IExpenseComplete from '../../Interfaces/IExpenseComplete.ts';
 
 interface ModalEditExpenseProps {
-  expenseToEdit: Expense | null;
-  setExpenseToEdit: React.Dispatch<React.SetStateAction<Expense | null>>;
+  expenseToEdit: IExpenseComplete | null;
+  setExpenseToEdit: React.Dispatch<
+    React.SetStateAction<IExpenseComplete | null>
+  >;
   isEditModalOpen: boolean;
-  handleEditOk: () => void;
+  handleEditSubmit: () => void;
   setIsEditModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   messageApi: any;
 }
@@ -27,19 +20,14 @@ function ModalEditExpense({
   expenseToEdit,
   setExpenseToEdit,
   isEditModalOpen,
-  handleEditOk,
+  handleEditSubmit,
   setIsEditModalOpen,
   messageApi,
 }: ModalEditExpenseProps) {
   const { categoryOptions } = useFetchUserInfos(messageApi);
-  const categoryOptionsWithoutAll = categoryOptions.filter(
-    (category) => category.value !== 'all'
-  );
 
   const findCategory = (categoryId: number | undefined) =>
-    categoryOptionsWithoutAll.find(
-      (category) => Number(category.value) === categoryId
-    );
+    categoryOptions.find((category) => Number(category.value) === categoryId);
 
   const setNewCategory = (value: string) => {
     const category = findCategory(Number(value));
@@ -99,16 +87,16 @@ function ModalEditExpense({
     <Modal
       title={`Éditer la dépense`}
       open={isEditModalOpen}
-      onOk={handleEditOk}
+      onOk={handleEditSubmit}
       onCancel={() => {
         setIsEditModalOpen(false);
         setExpenseToEdit(null);
       }}
     >
-      <form onSubmit={handleEditOk}>
+      <form onSubmit={handleEditSubmit}>
         <Select
           placeholder="Catégorie"
-          options={categoryOptionsWithoutAll}
+          options={categoryOptions.filter((cat) => cat.value !== 'all')}
           style={{ width: '100%', marginBottom: '1rem' }}
           onChange={(value: string) => setNewCategory(value)}
           value={expenseToEdit?.categoryId?.toString()}

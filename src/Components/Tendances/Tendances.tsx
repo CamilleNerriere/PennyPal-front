@@ -1,4 +1,4 @@
-import './Tendances.scss';
+import { useEffect, useState } from 'react';
 import {
   ConfigProvider,
   DatePicker,
@@ -8,7 +8,10 @@ import {
 import dayjs, { Dayjs } from 'dayjs';
 import useFetchUserInfos from '../../Hook/useFetchUserInfos.tsx';
 import useAxiosAuth from '../../Auth/useAxiosAuth.ts';
-import { useEffect, useState } from 'react';
+import { handleApiError } from '../../utils/handleApiError.ts';
+import MessageApi from '../MessagesApi/MessageApi.ts';
+import { logError } from '../../utils/logError.ts';
+import './Tendances.scss';
 
 const { RangePicker } = DatePicker;
 
@@ -46,7 +49,11 @@ function Tendances({ messageApi }: { messageApi: any }) {
     axiosAuth
       .get('Expense/Tendances', { params: filters })
       .then((res) => setAmount(res.data))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        const message = handleApiError(err);
+        MessageApi(messageApi, message, 'error');
+        logError('GetTendances : ', err);
+      });
   }, [tendancesFilters]);
 
   const handleChangeCategory = (value: string) => {

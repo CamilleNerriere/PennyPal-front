@@ -1,30 +1,23 @@
-import './UserExpenses.scss';
+import { useCallback, useEffect, useState } from 'react';
 import { Select, DatePicker, ConfigProvider, Modal } from 'antd';
-import ModalEditExpense from './ModalEditExpense.tsx';
 import type { DatePickerProps, GetProps } from 'antd';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import ModalEditExpense from './ModalEditExpense.tsx';
 import Expenses from './Expenses.tsx';
-import { useEffect, useState } from 'react';
 import useFetchUserInfos from '../../Hook/useFetchUserInfos.tsx';
 import MessageApi from '../MessagesApi/MessageApi.ts';
+import { logError } from '../../utils/logError.ts';
+import { handleApiError } from '../../utils/handleApiError.ts';
+import IExpenseComplete from '../../Interfaces/IExpenseComplete.ts';
+import './UserExpenses.scss';
 
 import useAxiosAuth from '../../Auth/useAxiosAuth.ts';
 
 interface Filters {
   Month: number | null;
   Year: number | null;
-  CategoryId: number | null;
-}
-
-interface Expense {
-  id: number;
-  amount: number;
-  categoryName: string;
-  categoryId: number;
-  expenseName: string;
-  date: string;
-  userId: number;
+  CategoryId: string | null;
 }
 
 interface IExpenseToDelete {
@@ -37,14 +30,18 @@ dayjs.extend(customParseFormat);
 
 function UserExpense({ messageApi }: { messageApi: any }) {
   const { categoryOptions } = useFetchUserInfos(messageApi);
+  const date = dayjs();
+
   const [filters, setFilters] = useState<Filters>({
-    Month: null,
-    Year: null,
+    Month: date.month() + 1,
+    Year: date.year(),
     CategoryId: null,
   });
 
-  const [expenses, setExpenses] = useState<Expense[] | []>([]);
-  const [expenseToEdit, setExpenseToEdit] = useState<Expense | null>(null);
+  const [expenses, setExpenses] = useState<IExpenseComplete[] | []>([]);
+  const [expenseToEdit, setExpenseToEdit] = useState<IExpenseComplete | null>(
+    null
+  );
   const [expenseToDelete, setExpenseToDelete] =
     useState<IExpenseToDelete | null>(null);
 
@@ -53,116 +50,42 @@ function UserExpense({ messageApi }: { messageApi: any }) {
 
   const axiosAuth = useAxiosAuth();
 
-  // Edit Expense
-
-  const handleSetExpenseToEdit = (id: number) => {
-    const expenseToEdit: Expense | undefined = expenses.find(
-      (expense) => expense.id === id
-    );
-    if (expenseToEdit) setExpenseToEdit(expenseToEdit);
-    setIsEditModalOpen(true);
-  };
-
-  const handleEditOk = () => {
-    axiosAuth
-      .put(`Expense/Update`, {
-        id: expenseToEdit?.id,
-        categoryId: expenseToEdit?.categoryId,
-        name: expenseToEdit?.expenseName,
-        amount: expenseToEdit?.amount,
-        date: expenseToEdit?.date,
-        userId: expenseToEdit?.userId,
-      })
-      .then((res) => {
-        if (res.status === 204) {
-          MessageApi(messageApi, 'Dépense éditée avec succès', 'success');
-
-          const expenseEdited = expenses.find(
-            (exp) => exp.id === expenseToEdit!.id
-          );
-          if (expenseEdited?.categoryId !== expenseToEdit!.categoryId) {
-            setExpenses((prev) =>
-              prev.filter((exp) => exp.id !== expenseToEdit!.id)
-            );
+  const getExpensesByFilter = useCallback(
+    (filters: {}) => {
+      axiosAuth
+        .get('/Expense', { params: filters })
+        .then((res) => {
+          let expenses: IExpenseComplete[] = [];
+          if (res.data.length > 0) {
+            for (let data of res.data) {
+              expenses.push({
+                id: data.id,
+                amount: data.amount,
+                expenseName: data.name,
+                categoryName:
+                  categoryOptions.find((cat) => cat.value == data.categoryId)
+                    ?.label || '',
+                categoryId: data.categoryId,
+                date: data.date,
+                userId: data.userId,
+              });
+            }
+            setExpenses(expenses);
           } else {
-            setExpenses((prev) =>
-              prev.map((exp) =>
-                exp.id === expenseToEdit!.id
-                  ? {
-                      ...exp,
-                      categoryId: expenseToEdit!.categoryId,
-                      amount: expenseToEdit!.amount,
-                      date: expenseToEdit!.date,
-                      expenseName: expenseToEdit!.expenseName,
-                    }
-                  : exp
-              )
-            );
+            setExpenses([]);
           }
-        } else {
-          MessageApi(messageApi, "Erreur lors de l'édition", 'error');
-        }
-        setExpenseToEdit(null);
-      })
-      .catch((err) => {
-        console.log(err);
-        MessageApi(messageApi, "Erreur lors de l'édition", 'error');
-      });
-    setIsEditModalOpen(false);
-  };
-
-  // Delete Expense
-
-  const handleDeleteOk = () => {
-    axiosAuth
-      .delete(`Expense/Delete/${expenseToDelete?.id ?? ''}`)
-      .then((res) => {
-        if (res.status === 204) {
-          MessageApi(messageApi, 'Dépense supprimée avec succès', 'success');
-          setExpenses((prev) =>
-            prev.filter((exp) => exp.id !== expenseToDelete?.id)
-          );
-        } else {
-          MessageApi(messageApi, 'Erreur lors de la suppression', 'error');
-        }
-        setExpenseToDelete(null);
-      })
-      .catch((err) => {
-        console.log(err);
-        MessageApi(messageApi, 'Erreur lors de la suppression', 'error');
-      });
-    setIsDeleteModalOpen(false);
-  };
+        })
+        .catch((err) => {
+          const message = handleApiError(err);
+          MessageApi(messageApi, message, 'error');
+          logError('GetExpenseByFilters : ', err);
+        });
+    },
+    [axiosAuth, categoryOptions, messageApi]
+  );
 
   const disabledDate: RangePickerProps['disabledDate'] = (current) => {
     return current > dayjs().endOf('day');
-  };
-
-  const getExpensesByFilter = (filters: {}) => {
-    axiosAuth
-      .get('/Expense', { params: filters })
-      .then((res) => {
-        let expenses: Expense[] = [];
-        if (res.data.length > 0) {
-          for (let data of res.data) {
-            expenses.push({
-              id: data.id,
-              amount: data.amount,
-              expenseName: data.name,
-              categoryName:
-                categoryOptions.find((cat) => cat.value == data.categoryId)
-                  ?.label || '',
-              categoryId: data.categoryId,
-              date: data.date,
-              userId: data.userId,
-            });
-            setExpenses(expenses);
-          }
-        } else {
-          setExpenses([]);
-        }
-      })
-      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -174,9 +97,8 @@ function UserExpense({ messageApi }: { messageApi: any }) {
   const handleChangeCategory = (value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
-      CategoryId: value === 'all' ? null : Number(value),
+      CategoryId: value === 'all' ? null : value,
     }));
-    console.log(`selected ${value}`);
   };
 
   const onChangeDate: DatePickerProps['onChange'] = (date) => {
@@ -185,6 +107,57 @@ function UserExpense({ messageApi }: { messageApi: any }) {
       Month: date.month() + 1,
       Year: date.year(),
     }));
+  };
+
+  // Edit Expense
+
+  const handleSetExpenseToEdit = (id: number) => {
+    const expenseToEdit: IExpenseComplete | undefined = expenses.find(
+      (expense) => expense.id === id
+    );
+    if (expenseToEdit) setExpenseToEdit(expenseToEdit);
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditSubmit = () => {
+    axiosAuth
+      .put(`Expense/Update`, {
+        id: expenseToEdit?.id,
+        categoryId: expenseToEdit?.categoryId,
+        name: expenseToEdit?.expenseName,
+        amount: expenseToEdit?.amount,
+        date: expenseToEdit?.date,
+        userId: expenseToEdit?.userId,
+      })
+      .then(() => {
+        MessageApi(messageApi, 'Dépense éditée avec succès', 'success');
+        getExpensesByFilter(filters);
+        setExpenseToEdit(null);
+      })
+      .catch((err) => {
+        const message = handleApiError(err);
+        MessageApi(messageApi, message, 'error');
+        logError('Edit Expense : ', err);
+      });
+    setIsEditModalOpen(false);
+  };
+
+  // Delete Expense
+
+  const handleDeleteOk = () => {
+    axiosAuth
+      .delete(`Expense/Delete/${expenseToDelete?.id ?? ''}`)
+      .then(() => {
+        MessageApi(messageApi, 'Dépense supprimée avec succès', 'success');
+        getExpensesByFilter(filters);
+        setExpenseToDelete(null);
+      })
+      .catch((err) => {
+        const message = handleApiError(err);
+        MessageApi(messageApi, message, 'error');
+        logError('Delete Expense : ', err);
+      });
+    setIsDeleteModalOpen(false);
   };
 
   return (
@@ -208,11 +181,13 @@ function UserExpense({ messageApi }: { messageApi: any }) {
             >
               <Select
                 defaultValue={categoryOptions[0]?.value}
+                value={filters.CategoryId?.toString()}
                 onChange={handleChangeCategory}
                 options={categoryOptions}
                 style={{ width: '48%', fontSize: '1.2rem', height: '3rem' }}
               />
               <DatePicker
+                defaultValue={dayjs()}
                 onChange={onChangeDate}
                 disabledDate={disabledDate}
                 picker="month"
@@ -223,7 +198,7 @@ function UserExpense({ messageApi }: { messageApi: any }) {
         )}
 
         <div className="userExpense__content__expenses">
-          {expenses.map((expense: Expense) => (
+          {expenses.map((expense: IExpenseComplete) => (
             <Expenses
               key={expense.id}
               id={expense.id}
@@ -255,7 +230,7 @@ function UserExpense({ messageApi }: { messageApi: any }) {
         setExpenseToEdit={setExpenseToEdit}
         expenseToEdit={expenseToEdit}
         isEditModalOpen={isEditModalOpen}
-        handleEditOk={handleEditOk}
+        handleEditSubmit={handleEditSubmit}
         setIsEditModalOpen={setIsEditModalOpen}
       />
     </div>

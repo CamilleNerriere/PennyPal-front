@@ -42,12 +42,15 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/signin" element={<SignIn />} />
+            <Route
+              path="/signin"
+              element={<SignIn messageApi={messageApi} />}
+            />
             <Route
               path="/home"
               element={
                 <ProtectedRoute>
-                  <HomeConnected />
+                  <HomeConnected messageApi={messageApi} />
                 </ProtectedRoute>
               }
             />
