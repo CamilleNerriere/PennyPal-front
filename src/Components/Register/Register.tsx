@@ -1,34 +1,53 @@
-import './Register.scss';
+import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, FieldProps, ErrorMessage } from 'formik';
 import { Input, Button } from 'antd';
 import * as Yup from 'yup';
+import useAxiosAuth from '../../Auth/useAxiosAuth.ts';
+import MessageApi from '../MessagesApi/MessageApi.ts';
+import { logError } from '../../utils/logError.ts';
+import { handleApiError } from '../../utils/handleApiError.ts';
+import './Register.scss';
 
-function Register() {
+function Register({ messageApi }: { messageApi: any }) {
   const initialValues = {
-    Firstname: '',
-    Lastname: '',
-    Email: '',
-    Password: '',
-    ConfirmPassword: '',
+    firstname: '',
+    lastname: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
   };
 
   const validationSchema = Yup.object({
-    Firstname: Yup.string()
+    firstname: Yup.string()
       .required('Prénom requis')
       .min(2, 'Le prénom doit avoir au moins 2 caractères'),
-    Lastname: Yup.string()
+    lastname: Yup.string()
       .required('Nom requis')
       .min(2, 'Le nom doit avoir au moins 2 caractères'),
-    Email: Yup.string().email('Email invalide').required('Mail requis'),
-    Password: Yup.string()
+    email: Yup.string().email('Email invalide').required('Mail requis'),
+    password: Yup.string()
       .required('Mot de passe requis')
       .min(8, 'Le mot de passe doit contenir au moins 8 caractères'),
-    ConfirmPassword: Yup.string()
+    confirmPassword: Yup.string()
       .required('Confirmation de mot de passe requise')
-      .oneOf([Yup.ref('Password'), 'Mot de passe différent']),
+      .oneOf([Yup.ref('password'), 'Mot de passe différent']),
   });
 
+  const axiosAuth = useAxiosAuth();
+
+  const navigate = useNavigate();
+
   const handleSubmit = (values: typeof initialValues) => {
+    axiosAuth
+      .post('/Auth/Register', values)
+      .then(() => {
+        navigate('/');
+      })
+      .catch((err) => {
+        const message = handleApiError(err);
+        MessageApi(messageApi, message, 'error');
+        logError('Register : ', err);
+      });
     console.log(values);
   };
 
@@ -46,71 +65,71 @@ function Register() {
           <Form className="register__form">
             <div className="register__form__field">
               <label className="sr-only">Prénom</label>
-              <Field name="Firstname">
+              <Field name="firstname">
                 {({ field }: FieldProps<string>) => (
                   <Input {...field} placeholder={'Prénom'} />
                 )}
               </Field>
 
-              {errors.Firstname && touched.Firstname ? (
+              {errors.firstname && touched.firstname ? (
                 <div className="register__form__field__error">
-                  {errors.Firstname}
+                  {errors.firstname}
                 </div>
               ) : null}
-              <ErrorMessage name="Firstname" />
+              <ErrorMessage name="firstname" />
             </div>
 
             <div className="register__form__field">
               <label className="sr-only">Nom</label>
-              <Field name="Lastname">
+              <Field name="lastname">
                 {({ field }: FieldProps<string>) => (
                   <Input {...field} placeholder={'Nom'} />
                 )}
               </Field>
 
-              {errors.Lastname && touched.Lastname ? (
+              {errors.lastname && touched.lastname ? (
                 <div className="register__form__field__error">
-                  {errors.Lastname}
+                  {errors.lastname}
                 </div>
               ) : null}
-              <ErrorMessage name="Lastname" />
+              <ErrorMessage name="lastname" />
             </div>
 
             <div className="register__form__field">
-              <label className="sr-only">Email</label>
-              <Field name="Email">
+              <label className="sr-only">email</label>
+              <Field name="email">
                 {({ field }: FieldProps<string>) => (
-                  <Input {...field} placeholder={'Email'} />
+                  <Input {...field} placeholder={'email'} />
                 )}
               </Field>
 
-              {errors.Email && touched.Email ? (
+              {errors.email && touched.email ? (
                 <div className="register__form__field__error">
-                  {errors.Email}
+                  {errors.email}
                 </div>
               ) : null}
-              <ErrorMessage name="Email" />
+              <ErrorMessage name="email" />
             </div>
 
             <div className="register__form__field">
               <label className="sr-only">Mot de passe</label>
-              <Field name="Password">
+              <Field name="password">
                 {({ field }: FieldProps<string>) => (
                   <Input.Password {...field} placeholder={'Mot de passe'} />
                 )}
               </Field>
 
-              {errors.Password && touched.Password ? (
+              {errors.password && touched.password ? (
                 <div className="register__form__field__error">
-                  {errors.Password}
+                  {errors.password}
                 </div>
               ) : null}
-              <ErrorMessage name="Password" />
+              <ErrorMessage name="password" />
             </div>
 
             <div className="register__form__field">
               <label className="sr-only">Confirmation du mot de passe</label>
-              <Field name="ConfirmPassword">
+              <Field name="confirmPassword">
                 {({ field }: FieldProps<string>) => (
                   <Input.Password
                     {...field}
@@ -120,12 +139,12 @@ function Register() {
                 )}
               </Field>
 
-              {errors.ConfirmPassword && touched.ConfirmPassword ? (
+              {errors.confirmPassword && touched.confirmPassword ? (
                 <div className="register__form__field__error">
-                  {errors.ConfirmPassword}
+                  {errors.confirmPassword}
                 </div>
               ) : null}
-              <ErrorMessage name="ConfirmPassword" />
+              <ErrorMessage name="confirmPassword" />
             </div>
 
             <div>

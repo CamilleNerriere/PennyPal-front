@@ -9,10 +9,9 @@ import useFetchUserInfos from '../../Hook/useFetchUserInfos.tsx';
 import MessageApi from '../MessagesApi/MessageApi.ts';
 import { logError } from '../../utils/logError.ts';
 import { handleApiError } from '../../utils/handleApiError.ts';
+import useAxiosAuth from '../../Auth/useAxiosAuth.ts';
 import IExpenseComplete from '../../Interfaces/IExpenseComplete.ts';
 import './UserExpenses.scss';
-
-import useAxiosAuth from '../../Auth/useAxiosAuth.ts';
 
 interface Filters {
   Month: number | null;

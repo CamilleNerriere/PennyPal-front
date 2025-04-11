@@ -33,7 +33,10 @@ function App() {
         <div className="app-body">
           <Routes>
             <Route path="/" element={<HomeConnect />} />
-            <Route path="/register" element={<Register />} />
+            <Route
+              path="/register"
+              element={<Register messageApi={messageApi} />}
+            />
             <Route
               path="/confirm-signin"
               element={
