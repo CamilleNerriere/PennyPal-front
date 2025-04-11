@@ -1,5 +1,8 @@
-import './App.scss';
 import { Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import { message } from 'antd';
+import { AuthProvider } from './Auth/AuthContext.tsx';
+import ProtectedRoute from './Auth/ProtectedRoute.tsx';
 import Header from './Components/Header/Header.tsx';
 import HomeConnect from './Components/HomeConnect/HomeConnect.tsx';
 import Register from './Components/Register/Register.tsx';
@@ -12,9 +15,7 @@ import Gestion from './Components/Gestion/Gestion.tsx';
 import Profil from './Components/Profil/Profil.tsx';
 import NotFound from './Components/NotFound/NotFound.tsx';
 import NavBar from './Components/NavBar/NavBar.tsx';
-import { AuthProvider } from './Auth/AuthContext.tsx';
-import ProtectedRoute from './Auth/ProtectedRoute.tsx';
-import { message } from 'antd';
+import './App.scss';
 
 function App() {
   const [messageApi, contextHolder] = message.useMessage();
@@ -62,7 +63,7 @@ function App() {
               path="/tendances"
               element={
                 <ProtectedRoute>
-                  <Tendances />
+                  <Tendances messageApi={messageApi} />
                 </ProtectedRoute>
               }
             />
@@ -84,8 +85,8 @@ function App() {
             />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <ToastContainer />
         </div>
-        {/*afficher seulement si co*/}
         <NavBar />
       </div>
     </AuthProvider>

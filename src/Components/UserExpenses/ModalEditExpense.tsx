@@ -20,6 +20,7 @@ interface ModalEditExpenseProps {
   isEditModalOpen: boolean;
   handleEditOk: () => void;
   setIsEditModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  messageApi: any;
 }
 
 function ModalEditExpense({
@@ -28,8 +29,9 @@ function ModalEditExpense({
   isEditModalOpen,
   handleEditOk,
   setIsEditModalOpen,
+  messageApi,
 }: ModalEditExpenseProps) {
-  const { categoryOptions } = useFetchUserInfos();
+  const { categoryOptions } = useFetchUserInfos(messageApi);
   const categoryOptionsWithoutAll = categoryOptions.filter(
     (category) => category.value !== 'all'
   );

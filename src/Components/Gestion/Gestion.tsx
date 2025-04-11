@@ -1,33 +1,21 @@
-import './Gestion.scss';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { Input, Button, Space, Select, DatePicker } from 'antd';
+import type { DatePickerProps } from 'antd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import useFetchUserInfos from '../../Hook/useFetchUserInfos.tsx';
 import useAxiosAuth from '../../Auth/useAxiosAuth.ts';
 import MessageApi from '../MessagesApi/MessageApi.ts';
-import type { DatePickerProps } from 'antd';
-import { Input, Button, Space, Select, DatePicker } from 'antd';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-
-// TODO
-// MAJ du state en cas d'ajout ou suppression de la catégorie
+import { handleApiError } from '../../utils/handleApiError.ts';
+import { logError } from '../../utils/logError.ts';
+import IExpense from '../../Interfaces/IExpense.ts';
+import './Gestion.scss';
 
 interface IGestionItems {
   expenseToAdd: boolean;
   categoryToAdd: boolean;
   categoryToEdit: boolean;
   categoryToDelete: boolean;
-}
-
-interface IUserCategory {
-  value: string;
-  label: string;
-}
-
-interface IExpense {
-  category: number | null;
-  amount: string | number | null;
-  name: string;
-  date: string | null;
 }
 
 interface ICategoryToAdd {
@@ -69,19 +57,9 @@ function Gestion({ messageApi }: { messageApi: any }) {
     categoryToDelete: false,
   });
 
-  const { categoryOptions } = useFetchUserInfos();
+  const { categoryOptions, refreshCategories } = useFetchUserInfos(messageApi);
 
-  const [categoryOptionsWithoutAll, setCategoryOptionsWithoutAll] = useState<
-    IUserCategory[]
-  >([]);
-
-  useEffect(() => {
-    if (categoryOptions && categoryOptions.length > 0) {
-      setCategoryOptionsWithoutAll(
-        categoryOptions.filter((category) => category.value !== 'all')
-      );
-    }
-  }, [categoryOptions]);
+  const axiosAuth = useAxiosAuth();
 
   // Add an expense
 
@@ -106,6 +84,24 @@ function Gestion({ messageApi }: { messageApi: any }) {
     setExpense((prev) => ({ ...prev, date: date.toISOString() }));
   };
 
+  const handleAddExpenseSubmit = () => {
+    axiosAuth
+      .post('/Expense/Add', {
+        categoryId: expense.category,
+        name: expense.name,
+        amount: expense.amount,
+        date: expense.date,
+      })
+      .then(() => {
+        MessageApi(messageApi, 'Dépense ajoutée avec succès', 'success');
+      })
+      .catch((err) => {
+        const message = handleApiError(err);
+        MessageApi(messageApi, message, 'error');
+        logError('GestionAddExpense : ', err);
+      });
+  };
+
   // Add a category
 
   const handleAddInputBudgetChange = (
@@ -118,6 +114,23 @@ function Gestion({ messageApi }: { messageApi: any }) {
         budget: value,
       }));
     }
+  };
+
+  const handleAddCategorySubmit = () => {
+    axiosAuth
+      .post('/ExpenseCategory', {
+        name: categoryToAdd.name,
+        monthlyBudget: categoryToAdd.budget,
+      })
+      .then(() => {
+        refreshCategories();
+        MessageApi(messageApi, 'Catégorie ajoutée avec succès', 'success');
+      })
+      .catch((err) => {
+        const message = handleApiError(err);
+        MessageApi(messageApi, message, 'error');
+        logError('GestionAddCategory : ', err);
+      });
   };
 
   // Edit a category
@@ -133,7 +146,9 @@ function Gestion({ messageApi }: { messageApi: any }) {
         });
       })
       .catch((err) => {
-        console.log(err);
+        const message = handleApiError(err);
+        MessageApi(messageApi, message, 'error');
+        logError('GestionFindCategoryById : ', err);
       });
   };
 
@@ -149,129 +164,48 @@ function Gestion({ messageApi }: { messageApi: any }) {
     }
   };
 
-  // Handle submit
-  const axiosAuth = useAxiosAuth();
-
-  const handleAddExpenseClick = () => {
-    axiosAuth
-      .post('/Expense/Add', {
-        categoryId: expense.category,
-        name: expense.name,
-        amount: expense.amount,
-        date: expense.date,
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          MessageApi(messageApi, 'Dépense ajoutée avec succès', 'success');
-        } else {
-          MessageApi(messageApi, "Erreur lors de l'ajout", 'error');
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        MessageApi(messageApi, "Erreur lors de l'ajout", 'error');
-      });
-  };
-
-  const handleAddCategoryClick = () => {
-    axiosAuth
-      .post('/ExpenseCategory', {
-        name: categoryToAdd.name,
-        monthlyBudget: categoryToAdd.budget,
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          setCategoryOptionsWithoutAll((prev) => [
-            ...prev,
-            { value: res.data.id, label: res.data.name },
-          ]);
-          MessageApi(messageApi, 'Catégorie ajoutée avec succès', 'success');
-        } else {
-          MessageApi(messageApi, "Erreur lors de l'ajout", 'error');
-        }
-      })
-      .catch((err) => {
-        MessageApi(messageApi, "Erreur lors de l'ajout", 'error');
-        console.log(err);
-      });
-  };
-
-  const handleEditExpenseClick = () => {
+  const handleEditCategorySubmit = () => {
     axiosAuth
       .put('/ExpenseCategory', {
         id: categoryToEdit.id,
         name: categoryToEdit.name,
         monthlyBudget: categoryToEdit.budget,
       })
-      .then((res) => {
-        if (res.status === 200) {
-          MessageApi(messageApi, 'Dépense éditée avec succès.', 'success');
-          setCategoryOptionsWithoutAll((prev) =>
-            prev.map((cat) =>
-              cat.value === categoryToEdit.id?.toString()
-                ? {
-                    ...cat,
-                    label: categoryToEdit.name,
-                  }
-                : cat
-            )
-          );
-        } else {
-          MessageApi(messageApi, "Erreur lors de l'édition", 'error');
-        }
+      .then(() => {
+        refreshCategories();
+        setCategoryToEdit({ id: null, name: '', budget: null });
+        MessageApi(messageApi, 'Catégorie éditée avec succès.', 'success');
       })
       .catch((err) => {
-        console.log(err);
-        MessageApi(messageApi, "Erreur lors de l'édition", 'error');
+        const message = handleApiError(err);
+        MessageApi(messageApi, message, 'error');
+        logError('GestionEditCategory : ', err);
       });
   };
+
+  // Delete a category
+
+  // we need this in order to memorize the category label to rerender in case of category delete
 
   const handleDeleteCategoryClick = () => {
     axiosAuth
       .delete(`/ExpenseCategory/${categoryToDelete}`)
-      .then((res) => {
-        if (res.status === 200) {
-          MessageApi(messageApi, 'Dépense supprimée avec succès.', 'success');
-          setCategoryOptionsWithoutAll((prev) =>
-            prev.filter((cat) => cat.value !== categoryToDelete?.toString())
-          );
-        } else {
-          MessageApi(messageApi, 'Erreur lors de la suppression', 'error');
-        }
+      .then(() => {
+        refreshCategories();
+        setCategoryToDelete(null);
+        MessageApi(messageApi, 'Dépense supprimée avec succès.', 'success');
       })
       .catch((err) => {
-        console.log(err);
-        MessageApi(messageApi, 'Erreur lors de la suppression', 'error');
+        const message = handleApiError(err);
+        MessageApi(messageApi, message, 'error');
+        logError('GestionDeleteCategory : ', err);
       });
   };
 
   // Toggle gestions
-  const handleAddExpenseVisibility = () => {
-    setShowItems((prev) => ({
-      ...prev,
-      expenseToAdd: !prev.expenseToAdd,
-    }));
-  };
 
-  const handleAddCategoryVisibility = () => {
-    setShowItems((prev) => ({
-      ...prev,
-      categoryToAdd: !prev.categoryToAdd,
-    }));
-  };
-
-  const handleEditExpenseVisibility = () => {
-    setShowItems((prev) => ({
-      ...prev,
-      categoryToEdit: !prev.categoryToEdit,
-    }));
-  };
-
-  const handleDeleteExpenseVisibility = () => {
-    setShowItems((prev) => ({
-      ...prev,
-      categoryToDelete: !prev.categoryToDelete,
-    }));
+  const toggleVisibility = (key: keyof IGestionItems) => {
+    setShowItems((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
   return (
@@ -281,18 +215,24 @@ function Gestion({ messageApi }: { messageApi: any }) {
         <div className="gestion__modules__item">
           <div
             className="gestion__modules__item__title"
-            onClick={handleAddExpenseVisibility}
+            onClick={() => toggleVisibility('expenseToAdd')}
             style={{ cursor: 'pointer' }}
           >
             <FontAwesomeIcon icon={faPlus} />
             <p>Ajouter une dépense</p>
           </div>
           {showItems.expenseToAdd && (
-            <div className="gestion__modules__item__content--expense">
+            <form
+              className="gestion__modules__item__content--expense"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleAddExpenseSubmit();
+              }}
+            >
               <Select
                 placeholder="Catégorie"
                 onChange={handleAddChangeCategory}
-                options={categoryOptionsWithoutAll}
+                options={categoryOptions.filter((cat) => cat.value !== 'all')}
                 style={{ width: '100%', marginBottom: '1rem' }}
               />
               <DatePicker
@@ -316,27 +256,33 @@ function Gestion({ messageApi }: { messageApi: any }) {
                 />
                 <Button
                   className="button"
-                  onClick={handleAddExpenseClick}
                   type="primary"
+                  htmlType="submit"
                   style={{ width: '15%' }}
                 >
                   Ok
                 </Button>
               </Space.Compact>
-            </div>
+            </form>
           )}
         </div>
         <div className="gestion__modules__item">
           <div
             className="gestion__modules__item__title"
-            onClick={handleAddCategoryVisibility}
+            onClick={() => toggleVisibility('categoryToAdd')}
             style={{ cursor: 'pointer' }}
           >
             <FontAwesomeIcon icon={faPlus} />
             <p>Ajouter une catégorie</p>
           </div>
           {showItems.categoryToAdd && (
-            <div className="gestion__modules__item__content--add-category">
+            <form
+              className="gestion__modules__item__content--add-category"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleAddCategorySubmit();
+              }}
+            >
               <Space.Compact style={{ width: '100%' }}>
                 <Input
                   placeholder={'Nom'}
@@ -360,30 +306,37 @@ function Gestion({ messageApi }: { messageApi: any }) {
                 <Button
                   className="button"
                   style={{ width: '15%' }}
-                  onClick={handleAddCategoryClick}
+                  htmlType="submit"
                   type="primary"
                 >
                   Ok
                 </Button>
               </Space.Compact>
-            </div>
+            </form>
           )}
         </div>
         <div className="gestion__modules__item">
           <div
             className="gestion__modules__item__title"
-            onClick={handleEditExpenseVisibility}
+            onClick={() => toggleVisibility('categoryToEdit')}
             style={{ cursor: 'pointer' }}
           >
             <FontAwesomeIcon icon={faPlus} />
             <p>Éditer une catégorie</p>
           </div>
           {showItems.categoryToEdit && (
-            <div className="gestion__modules__item__content--edit-category">
+            <form
+              className="gestion__modules__item__content--edit-category"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleEditCategorySubmit();
+              }}
+            >
               <Select
                 placeholder="Catégorie"
                 onChange={(value) => handleSelectCategoryToEdit(value)}
-                options={categoryOptionsWithoutAll}
+                value={categoryToEdit.id?.toString() ?? undefined}
+                options={categoryOptions.filter((cat) => cat.value !== 'all')}
                 style={{ width: '100%', marginBottom: '1rem' }}
               />
               <Space.Compact style={{ width: '100%' }}>
@@ -409,43 +362,50 @@ function Gestion({ messageApi }: { messageApi: any }) {
                 <Button
                   className="button"
                   style={{ width: '15%' }}
-                  onClick={handleEditExpenseClick}
+                  htmlType="submit"
                   type="primary"
                 >
                   Ok
                 </Button>
               </Space.Compact>
-            </div>
+            </form>
           )}
         </div>
         <div className="gestion__modules__item">
           <div
             className="gestion__modules__item__title"
-            onClick={handleDeleteExpenseVisibility}
+            onClick={() => toggleVisibility('categoryToDelete')}
             style={{ cursor: 'pointer' }}
           >
             <FontAwesomeIcon icon={faPlus} />
             <p>Supprimer une catégorie</p>
           </div>
           {showItems.categoryToDelete && (
-            <div className="gestion__modules__item__content--delete-category">
+            <form
+              className="gestion__modules__item__content--delete-category"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleDeleteCategoryClick();
+              }}
+            >
               <Space.Compact style={{ width: '100%' }}>
                 <Select
                   placeholder="Catégorie"
                   onChange={(value) => setCategoryToDelete(value)}
-                  options={categoryOptionsWithoutAll}
+                  value={categoryToDelete ?? undefined}
+                  options={categoryOptions.filter((cat) => cat.value !== 'all')}
                   style={{ width: '85%', fontSize: '1.2rem' }}
                 />
                 <Button
                   className="button"
                   style={{ width: '15%' }}
-                  onClick={handleDeleteCategoryClick}
+                  htmlType="submit"
                   type="primary"
                 >
                   Ok
                 </Button>
               </Space.Compact>
-            </div>
+            </form>
           )}
         </div>
       </div>

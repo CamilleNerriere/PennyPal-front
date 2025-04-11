@@ -1,4 +1,3 @@
-// auth/AuthContext.tsx
 import {
   createContext,
   useContext,
@@ -55,11 +54,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
   const [loading, setLoading] = useState(true);
 
-  let hasRefreshed = false; // 👈 en dehors du useEffect
+  let hasRefreshed = false;
 
   useEffect(() => {
     const refresh = async () => {
-      if (hasRefreshed) return; // 👈 évite le 2e appel
+      if (hasRefreshed) return;
       hasRefreshed = true;
 
       try {

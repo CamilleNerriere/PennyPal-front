@@ -1,18 +1,12 @@
+import { useCallback, useEffect, useState } from 'react';
 import useAxiosAuth from '../Auth/useAxiosAuth.ts';
-import { useEffect, useState } from 'react';
+import MessageApi from '../Components/MessagesApi/MessageApi.ts';
+import { handleApiError } from '../utils/handleApiError.ts';
+import { logError } from '../utils/logError.ts';
+import IUserCategory from '../Interfaces/IUserCategory.ts';
+import IUserInfos from '../Interfaces/IUserInfos.ts';
 
-interface IUserCategory {
-  value: string;
-  label: string;
-}
-
-interface IUserInfos {
-  firstname: string;
-  lastname: string;
-  email: string;
-}
-
-const useFetchUserInfos = () => {
+const useFetchUserInfos = ({ messageApi }: { messageApi: any }) => {
   const axiosAuth = useAxiosAuth();
 
   const [userInfo, setUserInfo] = useState<IUserInfos>({
@@ -23,7 +17,7 @@ const useFetchUserInfos = () => {
 
   const [categoryOptions, setCategoryOptions] = useState<IUserCategory[]>([]);
 
-  useEffect(() => {
+  const refreshCategories = useCallback(() => {
     axiosAuth
       .get('/ExpenseCategory')
       .then((res) => {
@@ -33,8 +27,16 @@ const useFetchUserInfos = () => {
         }
         setCategoryOptions(categories);
       })
-      .catch((err) => console.log(err));
-  }, []);
+      .catch((err) => {
+        const message = handleApiError(err);
+        MessageApi(messageApi, message, 'error');
+        logError('UserFetchExpenseCategory', err);
+      });
+  }, [axiosAuth, messageApi]);
+
+  useEffect(() => {
+    refreshCategories();
+  }, [refreshCategories]);
 
   useEffect(() => {
     axiosAuth
@@ -47,11 +49,13 @@ const useFetchUserInfos = () => {
         });
       })
       .catch((err) => {
-        console.log(err);
+        const message = handleApiError(err);
+        MessageApi(messageApi, message, 'error');
+        logError('UserFetchError', err);
       });
-  }, []);
+  }, [axiosAuth, messageApi]);
 
-  return { userInfo, categoryOptions };
+  return { userInfo, categoryOptions, refreshCategories };
 };
 
 export default useFetchUserInfos;

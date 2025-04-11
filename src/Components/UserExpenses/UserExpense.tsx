@@ -35,11 +35,8 @@ interface IExpenseToDelete {
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 dayjs.extend(customParseFormat);
 
-// TODO
-//Mise à jour du state
-
 function UserExpense({ messageApi }: { messageApi: any }) {
-  const { categoryOptions } = useFetchUserInfos();
+  const { categoryOptions } = useFetchUserInfos(messageApi);
   const [filters, setFilters] = useState<Filters>({
     Month: null,
     Year: null,
@@ -254,6 +251,7 @@ function UserExpense({ messageApi }: { messageApi: any }) {
         </p>
       </Modal>
       <ModalEditExpense
+        messageApi={messageApi}
         setExpenseToEdit={setExpenseToEdit}
         expenseToEdit={expenseToEdit}
         isEditModalOpen={isEditModalOpen}

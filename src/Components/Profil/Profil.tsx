@@ -8,7 +8,7 @@ import useAxiosAuth from '../../Auth/useAxiosAuth.ts';
 import MessageApi from '../MessagesApi/MessageApi.ts';
 
 function Profil({ messageApi }: { messageApi: any }) {
-  const { userInfo } = useFetchUserInfos();
+  const { userInfo } = useFetchUserInfos(messageApi);
   const [changePassword, setChangePassword] = useState(false);
   const [formValues, setFormValues] = useState({
     password: '',

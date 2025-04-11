@@ -20,8 +20,8 @@ interface ITendancesFilters {
   categoryId: number | null;
 }
 
-function Tendances() {
-  const { categoryOptions } = useFetchUserInfos();
+function Tendances({ messageApi }: { messageApi: any }) {
+  const { categoryOptions } = useFetchUserInfos(messageApi);
 
   const [tendancesFilters, setTendancesFilters] = useState<ITendancesFilters>({
     month1: null,
