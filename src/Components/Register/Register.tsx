@@ -48,7 +48,6 @@ function Register({ messageApi }: { messageApi: any }) {
         MessageApi(messageApi, message, 'error');
         logError('Register : ', err);
       });
-    console.log(values);
   };
 
   return (
