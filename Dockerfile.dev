@@ -1,0 +1,8 @@
+FROM node:lts
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install && ls -la node_modules/.bin
+COPY . .
+EXPOSE 5173
+ENV NODE_ENV=development
+CMD ["npm", "run", "dev", "--", "--host"]
