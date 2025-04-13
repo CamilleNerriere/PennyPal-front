@@ -42,15 +42,21 @@ function Expenses({
         <div className="Expenses__text-infos__additional">
           <div className="Expenses__text-infos__additional__icons">
             <FontAwesomeIcon
+              className="Expenses__text-infos__additional__icons--icon"
               icon={faPenToSquare}
               cursor={'pointer'}
+              aria-label="Éditer"
+              title="Éditer"
               onClick={() => {
                 handleSetExpenseToEdit(id);
               }}
             />
             <FontAwesomeIcon
+              className="Expenses__text-infos__additional__icons--icon"
               icon={faTrashCan}
               cursor={'pointer'}
+              aria-label="Supprimer"
+              title="Supprimer"
               onClick={() => {
                 setExpenseToDelete({ id: id, name: expenseName });
                 setIsDeleteModalOpen(!isDeleteModalOpen);

@@ -21,17 +21,18 @@ html, body, #root {
   font-family: 'Manrope', 'sans-serif';
 }
 
-.button.button {
+.button.button, .ant-modal-content Button {
   background: #03256C;
   border: solid 1px #B9C1CE;
   color: #fff;
 }
 
-.ant-modal-content Button {
-  background: #03256C;
-  border: solid 1px #B9C1CE;
-  color: #fff;
+.button.button:hover, .ant-modal-content Button:hover  {
+  background: v.$lightmediumblue !important; 
+  border: solid 1px #B9C1CE !important;
+  color: #fff!important;
 }
+
 
 .ant-message {
   top: 10rem !important;

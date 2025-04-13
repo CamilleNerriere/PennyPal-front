@@ -27,6 +27,10 @@
           font-size: 1.5rem;
           display: flex;
           gap: 1rem;
+
+          &--icon:hover {
+            color:v.$grey;
+          }
         }
       }
     }

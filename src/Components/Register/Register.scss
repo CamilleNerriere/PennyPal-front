@@ -19,7 +19,14 @@
 
     &__button {
       width: 10rem;
+      height: 2rem;
       margin: 1rem;
+    }
+
+    &__field__error{
+      font-size: 0.8rem;
+      padding: 0.5rem 0.5rem 0 0.5rem;
+      color: rgb(109, 17, 17);
     }
 
   }

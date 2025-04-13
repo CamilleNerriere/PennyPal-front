@@ -12,6 +12,14 @@
   gap: 2rem;
   justify-content: center;
   z-index: 1000;
+
+  a.active{
+    color: #E4EDF1;
+  }
+
+  a:hover{
+    color :#C6D7DD;
+  }
 }
 
 @media screen and (max-width: 576px) {
