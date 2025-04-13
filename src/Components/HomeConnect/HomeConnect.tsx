@@ -17,6 +17,10 @@ function HomeConnect() {
             S'inscrire
           </NavLink>
         </Button>
+
+        <div className="home-connect__demo">
+          <p>Note : Il s'agit d'une version démo. L'inscription et la modification du mot de passe est désactivée.</p>
+        </div>
       </div>
     </div>
   );

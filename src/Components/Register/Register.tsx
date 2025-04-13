@@ -148,9 +148,10 @@ function Register({ messageApi }: { messageApi: any }) {
 
             <div>
               <Button
+                disabled
                 className="button register__form__button"
                 htmlType={'submit'}
-                disabled={isSubmitting || !isValid || !dirty}
+                // disabled={isSubmitting || !isValid || !dirty}
               >
                 S'inscrire
               </Button>

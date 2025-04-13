@@ -1,4 +1,4 @@
-
+@use "../../styles/variables.scss" as v;
 .home-connect {
   display: flex;
   flex-direction: column;
@@ -15,5 +15,17 @@
   .button.button {
     width: 10rem;
     height: 2.5rem;
+  }
+
+  &__demo {
+    background-color: v.$lightblue;
+    padding : 1rem 0;
+    border-top: solid v.$lightgray 1px;
+    border-bottom: solid v.$lightgray 1px;;
+  }
+
+  &__demo p {
+    margin : 0 2rem 0 2rem;
+    font-size: 0.8rem;
   }
 }
