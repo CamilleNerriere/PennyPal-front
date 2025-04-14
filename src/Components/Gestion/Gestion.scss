@@ -1,4 +1,6 @@
 .gestion {
+  max-width: 100%;
+
   &__modules {
     margin: 0 1.5rem;
 
@@ -151,6 +153,7 @@
 @media screen and (min-width: 768px) {
 
   .gestion {
+
     &__add-expense {
 
       &__bloc {

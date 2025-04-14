@@ -12,6 +12,12 @@
   line-height: 1.5rem;
 }
 
+.profil__description-firstname, .profil__description-lastname, .profil__description-email {
+  max-width: 100%;
+  word-break: break-word;
+  white-space: normal;
+}
+
 .profil__edit {
   margin: 0 auto 1.5rem auto;
   overflow: hidden;

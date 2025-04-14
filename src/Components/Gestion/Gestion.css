@@ -1,3 +1,6 @@
+.gestion {
+  max-width: 100%;
+}
 .gestion__modules {
   margin: 0 1.5rem;
 }

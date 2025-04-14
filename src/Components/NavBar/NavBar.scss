@@ -3,13 +3,14 @@
 .navbar {
   background-color: v.$mediumblue;
   height: 7%;
+  max-width: 100%;
   position: sticky;
   bottom: 0;
   color: v.$lightgray;
-  font-size: 2rem;
+  font-size: 1.5rem;
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
   justify-content: center;
   z-index: 1000;
 
@@ -22,8 +23,9 @@
   }
 }
 
-@media screen and (max-width: 576px) {
+@media screen and (min-width: 576px) {
   .navbar {
-    font-size: 1.5rem;
+    font-size: 2rem;
+    gap: 2rem;
   }
 }

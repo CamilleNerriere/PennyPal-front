@@ -12,7 +12,8 @@
     padding: 2rem;
     border-radius: v.$gutter;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin: 2rem 0;
+    margin: 2rem auto;
+    max-width: 25rem;
 
     &__bold {
       font-weight: 600;
@@ -43,6 +44,8 @@
       &__title {
         display: flex;
         flex-direction: column;
+        word-break: break-word;
+        white-space: normal;
       }
 
       &__budget {
