@@ -11,6 +11,14 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+  outline: 1px solid transparent;
+
+  @media (max-width: 480px) {
+    &.debug-overflow {
+      outline: 2px solid red !important;
+    }
+  }
 }
 
 html, body, #root {
