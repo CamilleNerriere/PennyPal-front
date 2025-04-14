@@ -13,12 +13,12 @@
   justify-content: center;
   z-index: 1000;
 
-  a.active{
-    color: #E4EDF1;
+  a.active {
+    color: #fff;
   }
 
-  a:hover{
-    color :#C6D7DD;
+  a:hover {
+    color: rgba(255, 255, 255, 0.75);
   }
 }
 

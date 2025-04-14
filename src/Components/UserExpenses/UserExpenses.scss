@@ -14,6 +14,15 @@
       margin: 1rem 0.5rem;
     }
   }
+
+  &__select, &__date-picker {
+    width: 48%;
+    height: 3rem;
+  }
+
+  &__select {
+    font-size: 1.2rem;
+  }
 }
 
 @media (min-width: 768px) {
@@ -25,6 +34,21 @@
 
     &__content {
       margin: auto;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .userExpense {
+    &__content {
+      &__selections {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+    }
+
+    &__select, &__date-picker {
+      width: 100%;
     }
   }
 }

@@ -2,16 +2,161 @@
   margin: 0 1.5rem;
 }
 .gestion__modules__item {
-  margin-bottom: 1rem;
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  margin: 0 auto 1.5rem auto;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  padding: 0;
+  max-width: 45em;
 }
 .gestion__modules__item__title {
   display: flex;
-  gap: 1rem;
-  align-items: first baseline;
-  margin-bottom: 0.5rem;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 1rem 1.5rem;
+  background-color: transparent;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.3s ease;
 }
-.gestion__modules__item__content--expense, .gestion__modules__item__content--add-category, .gestion__modules__item__content--delete-category, .gestion__modules__item__content--edit-category {
-  max-width: 20rem;
+.gestion__modules__item:hover {
+  background-color: rgba(0, 94, 99, 0.05);
+}
+.gestion__modules__item svg {
+  color: #005e63;
+}
+.gestion__modules__item p {
+  margin: 0;
+}
+.gestion__modules__item form {
+  padding: 1rem 1.5rem;
+  background-color: #f9fbfc;
+}
+.gestion__add-expense__select, .gestion__add-expense__date-picker {
+  width: 100%;
+}
+.gestion__add-expense__bloc {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+.gestion__add-expense__input-name {
+  width: 100%;
+}
+.gestion__add-expense__input-amount {
+  width: 100%;
+}
+.gestion__add-expense__button {
+  margin-top: 1rem;
+  width: 50%;
+}
+.gestion__add-category__bloc {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+.gestion__add-category__input-name {
+  width: 100%;
+}
+.gestion__add-category__input-amount {
+  width: 100%;
+}
+.gestion__add-category__button {
+  margin-top: 1rem;
+  width: 50%;
+}
+.gestion__edit-category__select {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.gestion__edit-category__bloc {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+.gestion__edit-category__input-name {
+  width: 100%;
+}
+.gestion__edit-category__input-amount {
+  width: 100%;
+}
+.gestion__edit-category__button {
+  width: 50%;
+  margin-top: 1rem;
+}
+.gestion__delete-category__bloc {
+  display: flex;
+  justify-content: space-between;
+}
+.gestion__delete-category__select {
+  width: 80%;
+}
+.gestion__delete-category__button {
+  width: 15%;
+}
+
+@media screen and (min-width: 768px) {
+  .gestion__add-expense__bloc {
+    flex-direction: row;
+  }
+  .gestion__add-expense__select, .gestion__add-expense__date-picker {
+    width: 47.5%;
+    margin-bottom: 1rem;
+  }
+  .gestion__add-category__bloc {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+  }
+  .gestion__add-category__input-name {
+    width: 40%;
+  }
+  .gestion__add-category__input-amount {
+    width: 35%;
+  }
+  .gestion__add-category__button {
+    width: 15%;
+  }
+  .gestion__edit-category__select {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  .gestion__edit-category__bloc {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+  }
+  .gestion__edit-category__input-name {
+    width: 40%;
+  }
+  .gestion__edit-category__input-amount {
+    width: 35%;
+  }
+  .gestion__edit-category__button {
+    width: 15%;
+  }
+  .gestion__delete-category__bloc {
+    display: flex;
+    justify-content: space-between;
+  }
+  .gestion__delete-category__select {
+    width: 80%;
+  }
+  .gestion__delete-category__button {
+    width: 15%;
+  }
 }
 
 /*# sourceMappingURL=Gestion.css.map */

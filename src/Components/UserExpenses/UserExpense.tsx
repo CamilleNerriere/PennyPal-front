@@ -179,18 +179,18 @@ function UserExpense({ messageApi }: { messageApi: any }) {
               }}
             >
               <Select
+                className="userExpense__select"
                 defaultValue={categoryOptions[0]?.value}
                 value={filters.CategoryId?.toString()}
                 onChange={handleChangeCategory}
                 options={categoryOptions}
-                style={{ width: '48%', fontSize: '1.2rem', height: '3rem' }}
               />
               <DatePicker
+                className="userExpense__date-picker"
                 defaultValue={dayjs()}
                 onChange={onChangeDate}
                 disabledDate={disabledDate}
                 picker="month"
-                style={{ width: '48%', height: '3rem' }}
               />
             </ConfigProvider>
           </div>

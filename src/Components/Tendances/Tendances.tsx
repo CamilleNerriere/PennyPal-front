@@ -99,19 +99,19 @@ function Tendances({ messageApi }: { messageApi: any }) {
             }}
           >
             <Select
+              className="tendances__select"
               defaultValue={categoryOptions[0]?.value}
               onChange={handleChangeCategory}
               options={categoryOptions}
-              style={{ width: '48%', fontSize: '1.2rem', height: '3rem' }}
             />
             <RangePicker
+              className="tendances__range-picker"
               id={{
                 start: 'startInput',
                 end: 'endInput',
               }}
               onChange={onChangeDate}
               picker="month"
-              style={{ width: '48%', height: '3rem' }}
               popupClassName="custom-range-picker-dropdown"
               disabledDate={(current) => {
                 return current && current > dayjs().endOf('day');

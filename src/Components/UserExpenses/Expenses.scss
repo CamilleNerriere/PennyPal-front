@@ -6,6 +6,10 @@
   padding: 1rem 0;
   border-bottom: solid 1px v.$main;
 
+  &:hover {
+    background-color: v.$softhover;
+  }
+
   &__text {
     display: flex;
     gap: 2rem;
@@ -29,7 +33,8 @@
           gap: 1rem;
 
           &--icon:hover {
-            color:v.$grey;
+            color:v.$grey
+          ;
           }
         }
       }
@@ -47,6 +52,7 @@
 
     &-date {
       font-size: 1rem;
+      color: v.$grey;
     }
   }
 }

@@ -229,40 +229,42 @@ function Gestion({ messageApi }: { messageApi: any }) {
                 handleAddExpenseSubmit();
               }}
             >
-              <Select
-                placeholder="Catégorie"
-                onChange={handleAddChangeCategory}
-                options={categoryOptions.filter((cat) => cat.value !== 'all')}
-                style={{ width: '100%', marginBottom: '1rem' }}
-              />
-              <DatePicker
-                onChange={handleAddDateChange}
-                style={{ width: '100%', marginBottom: '1rem' }}
-              />
-              <Space.Compact style={{ width: '100%' }}>
+              <div className="gestion__add-expense__bloc">
+                <Select
+                  className="gestion__add-expense__select"
+                  placeholder="Catégorie"
+                  onChange={handleAddChangeCategory}
+                  options={categoryOptions.filter((cat) => cat.value !== 'all')}
+                />
+                <DatePicker
+                  className="gestion__add-expense__date-picker"
+                  onChange={handleAddDateChange}
+                />
+              </div>
+
+              <div className="gestion__add-expense__bloc">
                 <Input
+                  className="gestion__add-expense__input-name"
                   value={expense.name}
                   onChange={(e) =>
                     setExpense((prev) => ({ ...prev, name: e.target.value }))
                   }
                   placeholder="Nom"
-                  style={{ width: '55%' }}
                 />
                 <Input
+                  className="gestion__add-expense__input-amount"
                   value={expense.amount ? expense.amount : ''}
                   onChange={(e) => handleInputAmountChange(e)}
                   placeholder="Montant"
-                  style={{ width: '30%' }}
                 />
                 <Button
-                  className="button"
+                  className="button gestion__add-expense__button"
                   type="primary"
                   htmlType="submit"
-                  style={{ width: '15%' }}
                 >
                   Ok
                 </Button>
-              </Space.Compact>
+              </div>
             </form>
           )}
         </div>
@@ -283,8 +285,9 @@ function Gestion({ messageApi }: { messageApi: any }) {
                 handleAddCategorySubmit();
               }}
             >
-              <Space.Compact style={{ width: '100%' }}>
+              <div className="gestion__add-category__bloc">
                 <Input
+                  className="gestion__add-category__input-name"
                   placeholder={'Nom'}
                   onChange={(e) => {
                     setCategoryToAdd((prev) => ({
@@ -293,25 +296,23 @@ function Gestion({ messageApi }: { messageApi: any }) {
                     }));
                   }}
                   value={categoryToAdd.name}
-                  style={{ width: '55%' }}
                 />
                 <Input
+                  className="gestion__add-category__input-amount"
                   placeholder={'Budget'}
                   onChange={(e) => {
                     handleAddInputBudgetChange(e);
                   }}
                   value={categoryToAdd.budget ? categoryToAdd.budget : ''}
-                  style={{ width: '30%' }}
                 />
                 <Button
-                  className="button"
-                  style={{ width: '15%' }}
+                  className="button gestion__add-category__button"
                   htmlType="submit"
                   type="primary"
                 >
                   Ok
                 </Button>
-              </Space.Compact>
+              </div>
             </form>
           )}
         </div>
@@ -333,14 +334,15 @@ function Gestion({ messageApi }: { messageApi: any }) {
               }}
             >
               <Select
+                className="gestion__edit-category__select"
                 placeholder="Catégorie"
                 onChange={(value) => handleSelectCategoryToEdit(value)}
                 value={categoryToEdit.id?.toString() ?? undefined}
                 options={categoryOptions.filter((cat) => cat.value !== 'all')}
-                style={{ width: '100%', marginBottom: '1rem' }}
               />
-              <Space.Compact style={{ width: '100%' }}>
+              <div className="gestion__edit-category__bloc">
                 <Input
+                  className="gestion__edit-category__input-name"
                   placeholder={'Nom'}
                   onChange={(e) => {
                     setCategoryToEdit((prev) => ({
@@ -349,25 +351,23 @@ function Gestion({ messageApi }: { messageApi: any }) {
                     }));
                   }}
                   value={categoryToEdit.name}
-                  style={{ width: '55%' }}
                 />
                 <Input
+                  className="gestion__edit-category__input-amount"
                   placeholder={'Budget'}
                   onChange={(e) => {
                     handleEditInputBudgetChange(e);
                   }}
                   value={categoryToEdit.budget ? categoryToEdit.budget : ''}
-                  style={{ width: '30%' }}
                 />
                 <Button
-                  className="button"
-                  style={{ width: '15%' }}
+                  className="button gestion__edit-category__button"
                   htmlType="submit"
                   type="primary"
                 >
                   Ok
                 </Button>
-              </Space.Compact>
+              </div>
             </form>
           )}
         </div>
@@ -388,23 +388,22 @@ function Gestion({ messageApi }: { messageApi: any }) {
                 handleDeleteCategoryClick();
               }}
             >
-              <Space.Compact style={{ width: '100%' }}>
+              <div className="gestion__delete-category__bloc">
                 <Select
+                  className="gestion__delete-category__select"
                   placeholder="Catégorie"
                   onChange={(value) => setCategoryToDelete(value)}
                   value={categoryToDelete ?? undefined}
                   options={categoryOptions.filter((cat) => cat.value !== 'all')}
-                  style={{ width: '85%', fontSize: '1.2rem' }}
                 />
                 <Button
-                  className="button"
-                  style={{ width: '15%' }}
+                  className="button gestion__delete-category__button"
                   htmlType="submit"
                   type="primary"
                 >
                   Ok
                 </Button>
-              </Space.Compact>
+              </div>
             </form>
           )}
         </div>

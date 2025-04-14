@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":["UserExpenses.scss"],"names":[],"mappings":"AAGE;EACE;EACA;;AAEA;EACE;EACA;;AAGF;EACE;;;AAKN;EAGI;IACE;;EAGF;IACE","file":"UserExpenses.css"}
+{"version":3,"sourceRoot":"","sources":["UserExpenses.scss"],"names":[],"mappings":"AAGE;EACE;EACA;;AAEA;EACE;EACA;;AAGF;EACE;;AAIJ;EACE;EACA;;AAGF;EACE;;;AAIJ;EAGI;IACE;;EAGF;IACE;;;AAKN;EAGM;IACE;IACA;;EAIJ;IACE","file":"UserExpenses.css"}
