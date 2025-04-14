@@ -6,13 +6,25 @@
 .home-connect__wrapper {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 2rem;
   align-items: center;
-  margin-top: 8rem;
+  height: 50%;
+  margin-top: 2rem;
 }
 .home-connect .button.button {
   width: 10rem;
   height: 2.5rem;
+}
+.home-connect__demo {
+  background-color: #e3e8ea;
+  padding: 1rem 0;
+  border: solid rgb(213, 221, 221) 1px;
+}
+.home-connect__demo p {
+  margin: 0 2rem 0 2rem;
+  font-size: 0.8rem;
+  text-align: center;
 }
 
 /*# sourceMappingURL=HomeConnect.css.map */

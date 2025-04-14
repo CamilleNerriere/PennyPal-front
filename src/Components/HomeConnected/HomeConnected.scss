@@ -8,14 +8,15 @@
 
 
   &__amount {
-    background-color: v.$lightgray;
+    background-color: v.$cardgrey;
     padding: 2rem;
     border-radius: v.$gutter;
-    box-shadow: 5px 5px 5px v.$lighterblue;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     margin: 2rem 0;
 
     &__bold {
       font-weight: 600;
+      font-size: 1.1rem;
     }
 
     &__total, &__header {
@@ -26,7 +27,7 @@
     }
 
     &__text {
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       font-weight: 500;
     }
   }
@@ -46,6 +47,8 @@
 
       &__budget {
         font-size: 0.8rem;
+        color: v.$grey;
+        margin-top: 0.5rem;
       }
     }
 

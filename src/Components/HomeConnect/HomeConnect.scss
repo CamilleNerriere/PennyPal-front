@@ -1,4 +1,5 @@
 @use "../../styles/variables.scss" as v;
+
 .home-connect {
   display: flex;
   flex-direction: column;
@@ -7,9 +8,11 @@
   &__wrapper {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 2rem;
     align-items: center;
-    margin-top: 8rem;
+    height: 50%;
+    margin-top: 2rem;
   }
 
   .button.button {
@@ -18,14 +21,14 @@
   }
 
   &__demo {
-    background-color: v.$lightblue;
-    padding : 1rem 0;
-    border-top: solid v.$lightgray 1px;
-    border-bottom: solid v.$lightgray 1px;;
+    background-color: v.$cardgrey;
+    padding: 1rem 0;
+    border: solid v.$lightergrey 1px;
   }
 
   &__demo p {
-    margin : 0 2rem 0 2rem;
+    margin: 0 2rem 0 2rem;
     font-size: 0.8rem;
+    text-align: center;
   }
 }

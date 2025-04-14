@@ -11,6 +11,12 @@
   justify-content: center;
   z-index: 1000;
 }
+.navbar a.active {
+  color: #E4EDF1;
+}
+.navbar a:hover {
+  color: #C6D7DD;
+}
 
 @media screen and (max-width: 576px) {
   .navbar {

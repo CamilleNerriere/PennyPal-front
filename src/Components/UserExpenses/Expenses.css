@@ -25,6 +25,9 @@
   display: flex;
   gap: 1rem;
 }
+.Expenses__text-infos__additional__icons--icon:hover {
+  color: rgb(86, 94, 94);
+}
 .Expenses__numbers {
   display: flex;
   flex-direction: column;

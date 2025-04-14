@@ -2,14 +2,15 @@
   margin: 0 1.5rem;
 }
 .HomeConnected__amount {
-  background-color: rgb(179, 188, 188);
+  background-color: #e3e8ea;
   padding: 2rem;
   border-radius: 1em;
-  box-shadow: 5px 5px 5px #9ba5a6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin: 2rem 0;
 }
 .HomeConnected__amount__bold {
   font-weight: 600;
+  font-size: 1.1rem;
 }
 .HomeConnected__amount__total, .HomeConnected__amount__header {
   display: flex;
@@ -18,7 +19,7 @@
   margin-bottom: 1rem;
 }
 .HomeConnected__amount__text {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 500;
 }
 .HomeConnected__category-remain__category {
@@ -33,6 +34,8 @@
 }
 .HomeConnected__category-remain__category__budget {
   font-size: 0.8rem;
+  color: rgb(86, 94, 94);
+  margin-top: 0.5rem;
 }
 .HomeConnected__nav {
   line-height: 1.5rem;
