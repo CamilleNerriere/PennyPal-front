@@ -7,12 +7,15 @@ import './styles/reset.scss';
 import './styles/style.scss';
 import 'antd/dist/reset.css';
 import App from './App.tsx';
+import { AuthProvider } from './Auth/AuthContext.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <ConfigProvider locale={fr_FR}>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </ConfigProvider>
     </BrowserRouter>
   </StrictMode>
