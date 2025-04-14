@@ -75,7 +75,6 @@ function Register({ messageApi }: { messageApi: any }) {
                   {errors.firstname}
                 </div>
               ) : null}
-              <ErrorMessage name="firstname" />
             </div>
 
             <div className="register__form__field">
@@ -91,7 +90,6 @@ function Register({ messageApi }: { messageApi: any }) {
                   {errors.lastname}
                 </div>
               ) : null}
-              <ErrorMessage name="lastname" />
             </div>
 
             <div className="register__form__field">
@@ -107,7 +105,6 @@ function Register({ messageApi }: { messageApi: any }) {
                   {errors.email}
                 </div>
               ) : null}
-              <ErrorMessage name="email" />
             </div>
 
             <div className="register__form__field">
@@ -123,7 +120,6 @@ function Register({ messageApi }: { messageApi: any }) {
                   {errors.password}
                 </div>
               ) : null}
-              <ErrorMessage name="password" />
             </div>
 
             <div className="register__form__field">
@@ -143,7 +139,6 @@ function Register({ messageApi }: { messageApi: any }) {
                   {errors.confirmPassword}
                 </div>
               ) : null}
-              <ErrorMessage name="confirmPassword" />
             </div>
 
             <div>
