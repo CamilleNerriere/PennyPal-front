@@ -60,7 +60,7 @@ function Register({ messageApi }: { messageApi: any }) {
         validateOnBlur={true}
         validateOnChange={true}
       >
-        {({ isSubmitting, errors, touched, isValid, dirty }) => (
+        {({ errors, touched }) => (
           <Form className="register__form">
             <div className="register__form__field">
               <label className="sr-only">Prénom</label>
