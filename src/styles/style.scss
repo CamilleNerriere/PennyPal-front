@@ -7,27 +7,22 @@
   src: local('Merge One Regular'), url('/fonts/MergeOne-Regular.woff') format('woff');
 }
 
-* {
+*, *:before, *:after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 
-  outline: 1px solid transparent;
-
-  @media (max-width: 480px) {
-    &.debug-overflow {
-      outline: 2px solid red !important;
-    }
-  }
 }
 
 html, body, #root {
   height: 100dvh;
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
+  max-width: 100vw;
+  width: 100%;
+  overflow-x: hidden;
   background-color: v.$body;
   font-family: 'Manrope', 'sans-serif';
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior-x: none;
 }
 
 .button.button, .ant-modal-content Button {
@@ -36,10 +31,10 @@ html, body, #root {
   color: #fff;
 }
 
-.button.button:hover, .ant-modal-content Button:hover  {
-  background: v.$lightmediumblue !important; 
+.button.button:hover, .ant-modal-content Button:hover {
+  background: v.$lightmediumblue !important;
   border: solid 1px #B9C1CE !important;
-  color: #fff!important;
+  color: #fff !important;
 }
 
 

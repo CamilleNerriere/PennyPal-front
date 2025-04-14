@@ -16,26 +16,9 @@ import Profil from './Components/Profil/Profil.tsx';
 import NotFound from './Components/NotFound/NotFound.tsx';
 import NavBar from './Components/NavBar/NavBar.tsx';
 import './App.scss';
-import { useEffect } from 'react';
 
 function App() {
   const [messageApi, contextHolder] = message.useMessage();
-
-  useEffect(() => {
-    const overflowing = [...document.querySelectorAll('*')].filter(
-      (el) => el.scrollWidth > document.documentElement.clientWidth
-    );
-
-    if (overflowing.length > 0) {
-      console.log('❗Éléments qui débordent :', overflowing);
-
-      overflowing.forEach((el) => {
-        if (el instanceof HTMLElement) {
-          el.style.outline = '2px solid red';
-        }
-      });
-    }
-  }, []);
 
   return (
     <AuthProvider>
