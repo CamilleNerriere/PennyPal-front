@@ -8,7 +8,13 @@ import { logError } from '../../utils/logError.ts';
 import { handleApiError } from '../../utils/handleApiError.ts';
 import './Register.scss';
 
-function Register({ messageApi }: { messageApi: any }) {
+function Register({
+  messageApi,
+  isDemo,
+}: {
+  messageApi: any;
+  isDemo: boolean;
+}) {
   const initialValues = {
     firstname: '',
     lastname: '',
@@ -60,7 +66,7 @@ function Register({ messageApi }: { messageApi: any }) {
         validateOnBlur={true}
         validateOnChange={true}
       >
-        {({ errors, touched }) => (
+        {({ errors, touched, isSubmitting, isValid, dirty }) => (
           <Form className="register__form">
             <div className="register__form__field">
               <label className="sr-only">Prénom</label>
@@ -143,10 +149,9 @@ function Register({ messageApi }: { messageApi: any }) {
 
             <div>
               <Button
-                disabled
                 className="button register__form__button"
                 htmlType={'submit'}
-                // disabled={isSubmitting || !isValid || !dirty}
+                disabled={isDemo ? true : isSubmitting || !isValid || !dirty}
               >
                 S'inscrire
               </Button>

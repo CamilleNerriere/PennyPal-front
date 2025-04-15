@@ -9,7 +9,7 @@ import './Profil.scss';
 import { handleApiError } from '../../utils/handleApiError.ts';
 import { logError } from '../../utils/logError.ts';
 
-function Profil({ messageApi }: { messageApi: any }) {
+function Profil({ messageApi, isDemo }: { messageApi: any; isDemo: boolean }) {
   const { userInfo } = useFetchUserInfos(messageApi);
   const [changePassword, setChangePassword] = useState(false);
   const [formValues, setFormValues] = useState({
@@ -18,6 +18,16 @@ function Profil({ messageApi }: { messageApi: any }) {
   });
 
   const axiosAuth = useAxiosAuth();
+
+  const isInvalid = () => {
+    if (!formValues.password || !formValues.confirmPassword) {
+      return true;
+    }
+
+    if (formValues.confirmPassword !== formValues.confirmPassword) {
+      return true;
+    }
+  };
 
   const handleSubmit = () => {
     axiosAuth
@@ -82,7 +92,12 @@ function Profil({ messageApi }: { messageApi: any }) {
                   }));
                 }}
               />
-              <Button disabled className="button" type="primary" onClick={handleSubmit}>
+              <Button
+                disabled={isDemo || isInvalid()}
+                className="button"
+                type="primary"
+                onClick={handleSubmit}
+              >
                 Ok
               </Button>
             </form>

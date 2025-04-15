@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { message } from 'antd';
-import { AuthProvider, useAuth } from './Auth/AuthContext.tsx';
+import { useAuth } from './Auth/AuthContext.tsx';
 import ProtectedRoute from './Auth/ProtectedRoute.tsx';
 import Header from './Components/Header/Header.tsx';
 import HomeConnect from './Components/HomeConnect/HomeConnect.tsx';
@@ -22,6 +22,12 @@ function App() {
 
   const { isAuthenticated } = useAuth();
 
+  const isDemo = import.meta.env.VITE_IS_DEMO === 'true';
+
+  console.log(import.meta.env.VITE_IS_DEMO);
+
+  console.log(isDemo);
+
   return (
     <div className="app">
       {contextHolder}
@@ -39,13 +45,13 @@ function App() {
               isAuthenticated ? (
                 <Navigate to="/home" replace />
               ) : (
-                <HomeConnect />
+                <HomeConnect isDemo={isDemo} />
               )
             }
           />
           <Route
             path="/register"
-            element={<Register messageApi={messageApi} />}
+            element={<Register messageApi={messageApi} isDemo={isDemo} />}
           />
           <Route
             path="/confirm-signin"
@@ -92,7 +98,7 @@ function App() {
             path="/profil"
             element={
               <ProtectedRoute>
-                <Profil messageApi={messageApi} />
+                <Profil messageApi={messageApi} isDemo={isDemo} />
               </ProtectedRoute>
             }
           />
