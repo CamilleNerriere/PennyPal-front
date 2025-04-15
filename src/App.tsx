@@ -24,10 +24,6 @@ function App() {
 
   const isDemo = import.meta.env.VITE_IS_DEMO === 'true';
 
-  console.log(import.meta.env.VITE_IS_DEMO);
-
-  console.log(isDemo);
-
   return (
     <div className="app">
       {contextHolder}
